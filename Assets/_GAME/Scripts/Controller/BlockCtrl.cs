@@ -51,9 +51,8 @@ public class BlockCtrl : MonoBehaviour
         foreach (var subBlockData in subBlockColors)
         {
             GetSubBlockDataAt(subBlockData.Value, out float3 pos, out float2 size);
-            var subBlock = SpawnSubBlock(pos, size);
-            subBlock.Setup(pos,size);
-            SetValueAt(subBlockData.Value,subBlock);
+            var subBlock = SpawnSubBlock(pos, size, subBlockData.Key);
+            SetValueAt(subBlockData, subBlock);
         }
     }
 
@@ -109,21 +108,19 @@ public class BlockCtrl : MonoBehaviour
         }
     }
 
-    SubBlockCtrl SpawnSubBlock(float3 pos, float2 size)
+    SubBlockCtrl SpawnSubBlock(float3 pos, float2 size, int colorIndex)
     {
         var subBlock = Instantiate(subBlockPref, _subBlockParents);
-        subBlock.transform.position = pos;
-
+        subBlock.Setup(pos, size, colorIndex, this);
         return subBlock;
     }
 
-    void SetValueAt(List<int> indexs, SubBlockCtrl subBlock)
+    void SetValueAt(KeyValuePair<int, List<int>> subBlockData, SubBlockCtrl subBlock)
     {
-        foreach (var index in indexs)
+        foreach (var index in subBlockData.Value)
         {
             var pos = girdWord.ConvertIndexToWorldPos(index);
-            var value = girdWord.GetFullValue();
-            girdWord.SetValueAt(pos, value);
+            girdWord.SetValueAt(pos, subBlockData.Key);
             subBlockCtrls[index] = subBlock;
         }
     }
