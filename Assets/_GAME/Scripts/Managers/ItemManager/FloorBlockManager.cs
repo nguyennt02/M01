@@ -6,7 +6,7 @@ public partial class ItemManager
     [Header("FloorBlock")]
     [SerializeField] FloorBlockCtrl floorBlockPref;
     [SerializeField] Transform _floorBlocksParent;
-    public Transform FloorBlocksParent { get; private set; }
+    public Transform FloorBlocksParent { get => _floorBlocksParent; }
     FloorBlockCtrl[] floorBlocks;
 
     public void InitFloorBlock()
@@ -16,17 +16,20 @@ public partial class ItemManager
         {
             posIndexs[i] = i;
         }
+        var length = girdWord.GridSize.x * girdWord.GridSize.y;
+        floorBlocks = new FloorBlockCtrl[length];
 
         for (int i = 0; i < posIndexs.Length; i++)
         {
             var index = posIndexs[i];
             if (index == -1) continue;
 
-            var pos = GirdWordManager.Instance.ConvertIndexToWorldPos(posIndexs[i]);
+            var pos = girdWord.ConvertIndexToWorldPos(posIndexs[i]);
             floorBlocks[i] = SpawnFloorBlockAt(pos);
+            floorBlocks[i].Setup(girdWord.Scale);
 
-            var value = GirdWordManager.Instance.GetEmptyValue();
-            GirdWordManager.Instance.SetValueAt(pos, value);
+            var value = girdWord.GetEmptyValue();
+            girdWord.SetValueAt(pos, value);
         }
     }
 

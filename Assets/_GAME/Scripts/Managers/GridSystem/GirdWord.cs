@@ -2,10 +2,8 @@ using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class GirdWordManager : MonoBehaviour
+public class GirdWord : MonoBehaviour
 {
-    public static GirdWordManager Instance { get; private set; }
-
     [Header("Setting")]
     [SerializeField] bool shouldDrawString;
     [SerializeField] int smallestPossibleValue;
@@ -18,9 +16,9 @@ public class GirdWordManager : MonoBehaviour
     [SerializeField] float degAroundX;
     public float DegAroundX { get { return degAroundX; } }
     [SerializeField] int2 gridSize;
-    public int2 GridSize { get { return gridSize; } set { gridSize = value; } }
+    public int2 GridSize { get => gridSize; }
     [SerializeField] float2 scale;
-    public float2 Scale { get { return scale; } }
+    public float2 Scale { get => scale; }
     NativeArray<int> _grid;
     public NativeArray<int> Grid
     {
@@ -37,16 +35,18 @@ public class GirdWordManager : MonoBehaviour
     public float2 Offset { get; private set; }
     readonly int2[] directions = new int2[] { new(1, 0), new(0, 1), new(-1, 0), new(0, -1) };
 
-    private void Start()
-    {
-        if (Instance == null) Instance = this;
-    }
-
     private void Update()
     {
 #if UNITY_EDITOR
         DrawGrid();
 #endif
+    }
+
+    public void Setup(int2 girdSize, float2 scale, float3 centerPos)
+    {
+        this.gridSize = girdSize;
+        this.scale = scale;
+        transform.position = centerPos;
     }
 
     public void BakingGridWorld()

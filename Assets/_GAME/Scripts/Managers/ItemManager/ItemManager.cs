@@ -5,7 +5,11 @@ public partial class ItemManager : MonoBehaviour
 {
     [Header("Base Item")]
     public static ItemManager Instance { get; private set; }
-
+    [SerializeField] GirdWord girdWordPref;
+    [SerializeField] Transform _girdWordParent;
+    public Transform GirdWordParent { get => _girdWordParent;}
+    [SerializeField] float3 centerPos;
+    GirdWord girdWord;
 
     private void Start()
     {
@@ -15,10 +19,9 @@ public partial class ItemManager : MonoBehaviour
     public void InitGird()
     {
         var gridSize = new int2(5,5);
-        floorBlocks = new FloorBlockCtrl[gridSize.x * gridSize.y];
-        blocks = new BlockCtrl[gridSize.x * gridSize.y];
-        
-        GirdWordManager.Instance.GridSize = gridSize;
-        GirdWordManager.Instance.BakingGridWorld();
+        var scale = new float2(2,2);
+        girdWord = Instantiate(girdWordPref, _girdWordParent);
+        girdWord.Setup(gridSize, scale, centerPos);
+        girdWord.BakingGridWorld();
     }
 }

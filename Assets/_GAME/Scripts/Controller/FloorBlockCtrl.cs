@@ -1,16 +1,13 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class FloorBlockCtrl : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    [SerializeField] SpriteRenderer renderer;
 
-    // Update is called once per frame
-    void Update()
+    public void Setup(Vector2 size)
     {
-        
+        renderer.drawMode = SpriteDrawMode.Tiled;
+        renderer.size = size;
     }
 }
