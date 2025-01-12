@@ -13,7 +13,7 @@ public partial class ItemManager
         var blockDatas = new Block[25];
         for (int i = 0; i < 25; i++)
         {
-            var block = new Block() { index = i, subBlockIndex = new int[4] { 0, 0, 0, 0 } };
+            var block = new Block() { index = i, subBlockIndex = new int[4] { 0, 0, 1, 1 } };
             blockDatas[i] = block;
         }
 

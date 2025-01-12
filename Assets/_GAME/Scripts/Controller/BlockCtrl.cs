@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -22,7 +23,7 @@ public class BlockCtrl : MonoBehaviour
         Position = position;
         SetSize(size);
         InitGird();
-        CreateBlock(subColorIndexs);
+        InitSubBlock(subColorIndexs);
     }
 
     void InitGird()
@@ -42,15 +43,88 @@ public class BlockCtrl : MonoBehaviour
         }
     }
 
-    void CreateBlock(int[] subColorIndexs)
+    void InitSubBlock(int[] subColorIndexs)
     {
         subBlockCtrls = new SubBlockCtrl[subColorIndexs.Length];
-        for (int i = 0; i < subBlockCtrls.Length; i++)
+        var subBlockColors = ConverArrayToDirection(subColorIndexs);
+
+        foreach (var subBlockData in subBlockColors)
         {
-            var pos = girdWord.ConvertIndexToWorldPos(i);
-            var subBlock = Instantiate(subBlockPref, _subBlockParents);
-            subBlock.transform.position = pos;
-            subBlockCtrls[i] = subBlock;
+            GetSubBlockDataAt(subBlockData.Value, out float3 pos, out float2 size);
+            var subBlock = SpawnSubBlock(pos, size);
+            subBlock.Setup(pos,size);
+            SetValueAt(subBlockData.Value,subBlock);
+        }
+    }
+
+    Dictionary<int, List<int>> ConverArrayToDirection(int[] arr)
+    {
+        Dictionary<int, List<int>> subBlockColors = new();
+        for (int i = 0; i < arr.Length; i++)
+        {
+            if (subBlockColors.ContainsKey(arr[i]))
+            {
+                subBlockColors[arr[i]].Add(i);
+            }
+            else
+            {
+                List<int> indexs = new();
+                indexs.Add(i);
+
+                subBlockColors.Add(arr[i], indexs);
+            }
+        }
+        return subBlockColors;
+    }
+
+    void GetSubBlockDataAt(List<int> indexs, out float3 pos, out float2 size)
+    {
+        pos = float3.zero;
+        size = float2.zero;
+        if (indexs.Count == 1)
+        {
+            pos = girdWord.ConvertIndexToWorldPos(indexs[0]);
+            size = girdWord.Scale;
+        }
+        else if (indexs.Count == 2)
+        {
+            var pos1 = girdWord.ConvertIndexToWorldPos(indexs[0]);
+            var pos2 = girdWord.ConvertIndexToWorldPos(indexs[1]);
+            pos = (pos1 + pos2) / 2;
+
+            var dir = new Vector2(pos2.x - pos1.x, pos2.y - pos1.y).normalized;
+            if (dir.x != 0 && dir.y == 0)
+            {
+                size = new float2(girdWord.Scale.x * 2, girdWord.Scale.y);
+            }
+            else if (dir.x == 0 && dir.y != 0)
+            {
+                size = new float2(girdWord.Scale.x, girdWord.Scale.y * 2);
+            }
+        }
+        else if (indexs.Count == 4)
+        {
+            pos = Position;
+            size = girdWord.Scale * 2;
+        }
+    }
+
+    SubBlockCtrl SpawnSubBlock(float3 pos, float2 size)
+    {
+        var subBlock = Instantiate(subBlockPref, _subBlockParents);
+        subBlock.transform.position = pos;
+
+        return subBlock;
+    }
+
+    void SetValueAt(List<int> indexs, SubBlockCtrl subBlock)
+    {
+        foreach (var index in indexs)
+        {
+            var pos = girdWord.ConvertIndexToWorldPos(index);
+            var value = girdWord.GetFullValue();
+            girdWord.SetValueAt(pos, value);
+            subBlockCtrls[index] = subBlock;
         }
     }
 }
