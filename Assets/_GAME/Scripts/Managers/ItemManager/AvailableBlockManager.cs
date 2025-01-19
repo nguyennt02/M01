@@ -7,10 +7,14 @@ using Unity.Mathematics;
 using UnityEngine;
 public partial class ItemManager
 {
+    [Header("AvailableBlock")]
+    [SerializeField] Transform _availableSpawnPos;
     [SerializeField] Transform _availableBlockParent;
+    public Transform AvailableSpawnPos { get => _availableSpawnPos; }
     public Transform AvailableBlockParent { get => _availableBlockParent; }
 
     int2[] pairs = new int2[4] { new int2(0, 1), new int2(0, 2), new int2(3, 2), new int2(3, 2) };
+    List<float3> spawnPos;
 
     public enum Difficulty
     {
@@ -26,12 +30,46 @@ public partial class ItemManager
         public int ratio3SubBlock;
     }
 
+    public void InitAvailableBlock()
+    {
+        spawnPos = new();
+        int amountBlock = 2;
+        foreach (Transform pos in AvailableSpawnPos)
+        {
+            if (pos.name.Equals($"{amountBlock}BlockPos"))
+            {
+                SpawnAvailableBlock(pos.position);
+            }
+        }
+    }
+
+    public void BeginDragBlock(float3 pos)
+    {
+        spawnPos.Add(pos);
+    }
+
+    public BlockCtrl[] SpawnAvailableBlock()
+    {
+        List<BlockCtrl> blocks = new();
+        while (spawnPos.Count != 0)
+        {
+            var index = spawnPos.Count - 1;
+            blocks.Add(SpawnAvailableBlock(spawnPos[index]));
+            blocks.RemoveAt(index);
+        }
+        return blocks.ToArray();
+    }
+
     public BlockCtrl SpawnAvailableBlock(float3 pos)
     {
         var amountSubBlock = RandomAmountSubBlock();
         var colorValues = RandomColorValue(amountSubBlock);
-        var blockData = CreateDataBlock(colorValues);
-        return SpawnBlock(pos, blockData);
+        var subBlockIndexs = CreateDataBlock(colorValues);
+
+        var block = Instantiate(blockPref, _availableBlockParent);
+        block.transform.position = pos;
+        block.Setup(girdWord.Scale, pos, subBlockIndexs);
+        return block;
     }
 
     int RandomAmountSubBlock()

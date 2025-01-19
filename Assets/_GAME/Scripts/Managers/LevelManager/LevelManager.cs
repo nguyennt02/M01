@@ -22,5 +22,6 @@ public class LevelManager : MonoBehaviour
         ItemManager.Instance.InitGird();
         ItemManager.Instance.InitFloorBlock();
         ItemManager.Instance.InitBlock();
+        ItemManager.Instance.InitAvailableBlock();
     }
 }
