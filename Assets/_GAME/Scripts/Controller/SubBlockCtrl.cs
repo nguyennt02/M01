@@ -11,7 +11,7 @@ public class SubBlockCtrl : MonoBehaviour
     public void Setup(float3 pos, float2 size, int colorIndex, BlockCtrl block)
     {
         if(size.Equals(float2.zero) || pos.Equals(float2.zero))
-            Debug.LogError("du lieu bi loi");
+            Debug.Log("du lieu bi loi",gameObject);
             
         Position = pos;
         transform.position = pos;
