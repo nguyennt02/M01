@@ -14,7 +14,7 @@ public partial class ItemManager
     public Transform AvailableBlockParent { get => _availableBlockParent; }
 
     int2[] pairs = new int2[4] { new int2(0, 1), new int2(0, 2), new int2(3, 2), new int2(3, 2) };
-    List<float3> spawnPos;
+    public BlockCtrl CurrentAvailableBlock { get; private set; }
 
     public enum Difficulty
     {
@@ -32,32 +32,14 @@ public partial class ItemManager
 
     public void InitAvailableBlock()
     {
-        spawnPos = new();
         int amountBlock = 2;
-        foreach (Transform pos in AvailableSpawnPos)
+        foreach (Transform pos in _availableSpawnPos)
         {
             if (pos.name.Equals($"{amountBlock}BlockPos"))
             {
                 SpawnAvailableBlock(pos.position);
             }
         }
-    }
-
-    public void BeginDragBlock(float3 pos)
-    {
-        spawnPos.Add(pos);
-    }
-
-    public BlockCtrl[] SpawnAvailableBlock()
-    {
-        List<BlockCtrl> blocks = new();
-        while (spawnPos.Count != 0)
-        {
-            var index = spawnPos.Count - 1;
-            blocks.Add(SpawnAvailableBlock(spawnPos[index]));
-            blocks.RemoveAt(index);
-        }
-        return blocks.ToArray();
     }
 
     public BlockCtrl SpawnAvailableBlock(float3 pos)
@@ -208,5 +190,35 @@ public partial class ItemManager
             }
         }
         return data;
+    }
+
+    void OnTouchBegan(float2 position, Collider2D[] colliders)
+    {
+        GrabAvailableBlockFrom(colliders);
+    }
+
+    void OnTouchMove(float2 position, float2 direction)
+    {
+        if (CurrentAvailableBlock == null) return;
+        CurrentAvailableBlock.transform.position = new(position.x,position.y,0);
+    }
+
+    void OnTouchEnd(float2 position, float2 direction)
+    {
+        if (CurrentAvailableBlock == null) return;
+        CurrentAvailableBlock.transform.position = CurrentAvailableBlock.Position;
+        CurrentAvailableBlock = null;
+    }
+
+    void GrabAvailableBlockFrom(Collider2D[] colliders)
+    {
+        foreach (var block in colliders)
+        {
+            if (block.transform.parent.Equals(_availableBlockParent)
+            && block.TryGetComponent(out BlockCtrl blockCtrl))
+            {
+                CurrentAvailableBlock = blockCtrl;
+            }
+        }
     }
 }
