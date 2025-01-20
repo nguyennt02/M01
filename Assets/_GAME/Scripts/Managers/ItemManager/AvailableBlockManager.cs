@@ -200,14 +200,22 @@ public partial class ItemManager
     void OnTouchMove(float2 position, float2 direction)
     {
         if (CurrentAvailableBlock == null) return;
-        CurrentAvailableBlock.transform.position = new(position.x,position.y,0);
+        MoveAvailableBlockAt(position);
     }
 
     void OnTouchEnd(float2 position, float2 direction)
     {
         if (CurrentAvailableBlock == null) return;
-        CurrentAvailableBlock.transform.position = CurrentAvailableBlock.Position;
-        CurrentAvailableBlock = null;
+        var blockPos = CurrentAvailableBlock.transform.position;
+        if (girdWord.IsPosOccupiedAt(blockPos))
+        {
+            ReturnAvailableBlock();
+        }
+        else
+        {
+            SpawnAvailableBlock(CurrentAvailableBlock.Position);
+            DropAvailableBlock();
+        }
     }
 
     void GrabAvailableBlockFrom(Collider2D[] colliders)
@@ -220,5 +228,35 @@ public partial class ItemManager
                 CurrentAvailableBlock = blockCtrl;
             }
         }
+    }
+
+    void MoveAvailableBlockAt(float2 pos)
+    {
+        var targetPos = new float3(pos.x, pos.y, 0);
+        targetPos.y += 1;
+
+        CurrentAvailableBlock.transform.position = targetPos;
+    }
+
+    void DropAvailableBlock()
+    {
+        var blockPos = CurrentAvailableBlock.transform.position;
+        var index = girdWord.ConvertWorldPosToIndex(blockPos);
+        var wordPos = girdWord.ConvertIndexToWorldPos(index);
+
+        CurrentAvailableBlock.transform.position = wordPos;
+        CurrentAvailableBlock.transform.SetParent(_blocksParent);
+        blocks[index] = CurrentAvailableBlock;
+
+        var value = girdWord.GetFullValue();
+        girdWord.SetValueAt(wordPos, value);
+
+        CurrentAvailableBlock = null;
+    }
+
+    void ReturnAvailableBlock()
+    {
+        CurrentAvailableBlock.transform.position = CurrentAvailableBlock.Position;
+        CurrentAvailableBlock = null;
     }
 }

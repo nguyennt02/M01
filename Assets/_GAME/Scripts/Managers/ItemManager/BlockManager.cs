@@ -11,11 +11,11 @@ public partial class ItemManager
     public void InitBlock()
     {
         var blockDatas = new Block[25];
-        for (int i = 0; i < 25; i++)
-        {
-            var block = new Block() { index = i, subBlockIndex = new int[4] { 0, 1, 3, 3 } };
-            blockDatas[i] = block;
-        }
+        // for (int i = 0; i < 25; i++)
+        // {
+        //     var block = new Block() { index = i, subBlockIndex = new int[4] { 0, 1, 3, 3 } };
+        //     blockDatas[i] = block;
+        // }
 
         var length = girdWord.GridSize.x * girdWord.GridSize.y;
         this.blocks = new BlockCtrl[length];
