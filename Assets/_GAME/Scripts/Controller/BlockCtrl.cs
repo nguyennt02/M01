@@ -13,8 +13,8 @@ public class BlockCtrl : MonoBehaviour
     public int[] subColorIndexs { get; private set; }
     [SerializeField] Transform _subBlockParents;
     public Transform SubBlockParents { get => _subBlockParents; }
-    SubBlockCtrl[] subBlockCtrls;
-    GirdWord girdWord;
+    public SubBlockCtrl[] subBlockCtrls;
+    public GirdWord girdWord;
 
     public void Setup(float2 size, float3 position, int[] subColorIndexs)
     {
@@ -51,7 +51,7 @@ public class BlockCtrl : MonoBehaviour
         foreach (var subBlockData in subBlockColors)
         {
             GetSubBlockDataAt(subBlockData.Value, out float3 pos, out float2 size);
-            var subBlock = SpawnSubBlock(pos, size, subBlockData.Key);
+            var subBlock = SpawnSubBlock(pos, size, subBlockData);
             SetValueAt(subBlockData, subBlock);
         }
     }
@@ -108,10 +108,10 @@ public class BlockCtrl : MonoBehaviour
         }
     }
 
-    SubBlockCtrl SpawnSubBlock(float3 pos, float2 size, int colorIndex)
+    SubBlockCtrl SpawnSubBlock(float3 pos, float2 size, KeyValuePair<int, List<int>> subBlockData)
     {
         var subBlock = Instantiate(subBlockPref, _subBlockParents);
-        subBlock.Setup(pos, size, colorIndex, this);
+        subBlock.Setup(pos, size, subBlockData.Key, subBlockData.Value.ToArray(), this);
         return subBlock;
     }
 

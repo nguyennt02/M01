@@ -7,7 +7,7 @@ public partial class ItemManager
     [SerializeField] BlockCtrl blockPref;
     [SerializeField] Transform _blocksParent;
     public Transform BlocksParent { get => _blocksParent; }
-    BlockCtrl[] blocks;
+    public BlockCtrl[] blocks;
     public void InitBlock()
     {
         var blockDatas = new Block[25];

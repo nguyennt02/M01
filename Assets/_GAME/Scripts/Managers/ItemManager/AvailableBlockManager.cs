@@ -215,6 +215,8 @@ public partial class ItemManager
         {
             SpawnAvailableBlock(CurrentAvailableBlock.Position);
             DropAvailableBlock();
+            CheckSubBlockMerge(out HashSet<SubBlockCtrl> subBlockMerges);
+            RemoveSubBlockMerge(subBlockMerges);
         }
     }
 

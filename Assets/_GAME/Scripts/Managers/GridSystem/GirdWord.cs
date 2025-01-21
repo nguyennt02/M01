@@ -282,4 +282,18 @@ public class GirdWord : MonoBehaviour
         }
         return neighbors;
     }
+
+    public float3[] FindPosNeighborAt(float3 worldPos)
+    {
+        float3[] neighbors = new float3[directions.Length];
+        var gridPos = ConvertWorldPosToGridPos(worldPos);
+        for (int i = 0; i < directions.Length; ++i)
+        {
+            var dir = directions[i];
+            var neighbor = gridPos + dir;
+            float3 wPos = ConvertGridPosToWorldPos(neighbor);
+            neighbors[i] = wPos;
+        }
+        return neighbors;
+    }
 }
