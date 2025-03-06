@@ -33,7 +33,7 @@ public class GirdWord : MonoBehaviour
     }
 
     public float2 Offset { get; private set; }
-    readonly int2[] directions = new int2[] { new(1, 0), new(0, 1), new(-1, 0), new(0, -1) };
+    readonly int2[] directions = new int2[] { new(1, 0), new(-1, 0), new(0, 1), new(0, -1) };
 
     private void Update()
     {

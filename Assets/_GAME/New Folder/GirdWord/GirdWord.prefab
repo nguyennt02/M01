@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ac97e342318bd34683e5b1ef2330922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldDrawString: 0
+  shouldDrawString: 1
   smallestPossibleValue: 0
   colorIndex: 0
   degAroundX: 0

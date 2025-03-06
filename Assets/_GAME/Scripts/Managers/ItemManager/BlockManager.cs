@@ -7,6 +7,8 @@ public partial class ItemManager
     [SerializeField] BlockCtrl blockPref;
     [SerializeField] Transform _blocksParent;
     public Transform BlocksParent { get => _blocksParent; }
+    [SerializeField] Transform _blockRemovesParent;
+    public Transform BlockRemovesParent { get => _blockRemovesParent; }
     public BlockCtrl[] blocks;
     public void InitBlock()
     {
@@ -40,6 +42,4 @@ public partial class ItemManager
         block.Setup(girdWord.Scale, pos, subBlockIndexs);
         return block;
     }
-
-
 }

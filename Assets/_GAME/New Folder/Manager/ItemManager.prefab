@@ -31,6 +31,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 3376095248427987874}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1521018487209872647
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4648524441502311238}
+  m_Layer: 0
+  m_Name: BlockRemoveParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4648524441502311238
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1521018487209872647}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5440461404445597800}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4318946644272452541
 GameObject:
   m_ObjectHideFlags: 0
@@ -221,6 +252,7 @@ Transform:
   - {fileID: 7184835821519268472}
   - {fileID: 5422089843455620353}
   - {fileID: 3376095248427987874}
+  - {fileID: 4648524441502311238}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &9180066536623172926
@@ -239,6 +271,8 @@ MonoBehaviour:
   _availableBlockParent: {fileID: 5422089843455620353}
   blockPref: {fileID: 658804778417449461, guid: aac26c149c8c83c479759754fc6f305b, type: 3}
   _blocksParent: {fileID: 7184835821519268472}
+  _blockRemovesParent: {fileID: 4648524441502311238}
+  blocks: []
   floorBlockPref: {fileID: 8603447334052400803, guid: 5ab187e793b5ad540bc2fcfddfe47fd7, type: 3}
   _floorBlocksParent: {fileID: 940980492748889304}
   girdWordPref: {fileID: 8862995871192127555, guid: 48b93b9783abe194da4c57d04e996950, type: 3}

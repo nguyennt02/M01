@@ -13,6 +13,8 @@ public class BlockCtrl : MonoBehaviour
     public int[] subColorIndexs { get; private set; }
     [SerializeField] Transform _subBlockParents;
     public Transform SubBlockParents { get => _subBlockParents; }
+    [SerializeField] Transform _subBlockRemoveParent;
+    public Transform SubBlockRemoveParent { get => _subBlockRemoveParent; }
     public SubBlockCtrl[] subBlockCtrls;
     public GirdWord girdWord;
 
@@ -41,6 +43,11 @@ public class BlockCtrl : MonoBehaviour
         {
             boxCol.size = size;
         }
+    }
+
+    public void SetPosition(float3 position)
+    {
+        Position = position;
     }
 
     void InitSubBlock(int[] subColorIndexs)
@@ -122,6 +129,29 @@ public class BlockCtrl : MonoBehaviour
             var pos = girdWord.ConvertIndexToWorldPos(index);
             girdWord.SetValueAt(pos, subBlockData.Key);
             subBlockCtrls[index] = subBlock;
+        }
+    }
+
+    public void UpdateBlock()
+    {
+        if (_subBlockParents.childCount == 0)
+        {
+            var parent = ItemManager.Instance.BlockRemovesParent;
+            transform.SetParent(parent);
+            gameObject.SetActive(false);
+            var girdWord = ItemManager.Instance.girdWord;
+            var index = girdWord.ConvertWorldPosToIndex(Position);
+            ItemManager.Instance.blocks[index] = null;
+            var emptyValue = girdWord.GetEmptyValue();
+            girdWord.SetValueAt(index, emptyValue);
+            return;
+        }
+        var subBlockColors = ConverArrayToDirection(subColorIndexs);
+        foreach (var subBlockData in subBlockColors)
+        {
+            GetSubBlockDataAt(subBlockData.Value, out float3 pos, out float2 size);
+            var subBlock = subBlockCtrls[subBlockData.Value[0]];
+            subBlock.UpdateSubBlock(pos, size, subBlockData.Value.ToArray());
         }
     }
 }

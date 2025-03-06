@@ -9,7 +9,7 @@ public partial class ItemManager : MonoBehaviour
     [SerializeField] Transform _girdWordParent;
     public Transform GirdWordParent { get => _girdWordParent; }
     [SerializeField] float3 centerPos;
-    GirdWord girdWord;
+    public GirdWord girdWord {get; private set; }
 
     void Awake()
     {

@@ -215,8 +215,9 @@ public partial class ItemManager
         {
             SpawnAvailableBlock(CurrentAvailableBlock.Position);
             DropAvailableBlock();
-            CheckSubBlockMerge(out HashSet<SubBlockCtrl> subBlockMerges);
+            CheckSubBlockMerge(out HashSet<SubBlockCtrl> subBlockMerges, out HashSet<BlockCtrl> blockMerges);
             RemoveSubBlockMerge(subBlockMerges);
+            RemoveBlockMerge(blockMerges);
         }
     }
 
@@ -248,6 +249,7 @@ public partial class ItemManager
 
         CurrentAvailableBlock.transform.position = wordPos;
         CurrentAvailableBlock.transform.SetParent(_blocksParent);
+        CurrentAvailableBlock.SetPosition(wordPos);
         blocks[index] = CurrentAvailableBlock;
 
         var value = girdWord.GetFullValue();
