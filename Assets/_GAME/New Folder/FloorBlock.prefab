@@ -80,7 +80,7 @@ SpriteRenderer:
   m_Color: {r: 0.9433962, g: 0.5473478, b: 0.5473478, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 2
+  m_DrawMode: 1
   m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
@@ -96,7 +96,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3047934958768009688}
-  - component: {fileID: 8603447334052400803}
+  - component: {fileID: -8101083761716962654}
   m_Layer: 0
   m_Name: FloorBlock
   m_TagString: Untagged
@@ -120,7 +120,7 @@ Transform:
   - {fileID: 6457567343268655694}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8603447334052400803
+--- !u!114 &-8101083761716962654
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -132,4 +132,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14ff86ec7900c39419a6c3b16be4a386, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 1257239650271638983}
+  spriteRdr: {fileID: 1257239650271638983}

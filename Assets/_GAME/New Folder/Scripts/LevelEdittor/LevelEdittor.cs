@@ -16,7 +16,6 @@ public enum TYPEBLOCK
 
 public struct Block
 {
-    public int index;
     public int[] subBlockIndex;
 }
 

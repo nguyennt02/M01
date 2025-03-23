@@ -16,7 +16,7 @@ public partial class ItemManager
         {
             posIndexs[i] = i;
         }
-        var length = girdWord.GridSize.x * girdWord.GridSize.y;
+        var length = gridWord.gridSize.x * gridWord.gridSize.y;
         floorBlocks = new FloorBlockCtrl[length];
 
         for (int i = 0; i < posIndexs.Length; i++)
@@ -24,12 +24,12 @@ public partial class ItemManager
             var index = posIndexs[i];
             if (index == -1) continue;
 
-            var pos = girdWord.ConvertIndexToWorldPos(posIndexs[i]);
+            var pos = gridWord.ConvertIndexToWorldPos(posIndexs[i]);
             floorBlocks[i] = SpawnFloorBlockAt(pos);
-            floorBlocks[i].Setup(girdWord.Scale);
+            floorBlocks[i].InitFloor(gridWord.scale);
 
-            var value = girdWord.GetEmptyValue();
-            girdWord.SetValueAt(pos, value);
+            var value = gridWord.EmptyValue;
+            gridWord.SetValueAt(pos, value);
         }
     }
 

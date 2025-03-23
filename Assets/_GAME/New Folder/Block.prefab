@@ -62,8 +62,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 4237102322956290544}
   - {fileID: 3242395787073193809}
+  - {fileID: 4237102322956290544}
   - {fileID: 4799411066260271409}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -125,8 +125,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 512b82b3d8c5e8543a71c1494746933c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  girdWordPref: {fileID: 8862995871192127555, guid: 48b93b9783abe194da4c57d04e996950, type: 3}
-  _girdWordParent: {fileID: 3242395787073193809}
+  gridWordPref: {fileID: 6707827226086280221, guid: 48b93b9783abe194da4c57d04e996950, type: 3}
+  _gridWordParent: {fileID: 3242395787073193809}
   subBlockPref: {fileID: 536838857748516789, guid: de9a163ae4bbfe3498550f4c8e6034ad, type: 3}
   _subBlockParents: {fileID: 4237102322956290544}
   _subBlockRemoveParent: {fileID: 4799411066260271409}

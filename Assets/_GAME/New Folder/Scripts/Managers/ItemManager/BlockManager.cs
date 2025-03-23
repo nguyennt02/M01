@@ -13,13 +13,11 @@ public partial class ItemManager
     public void InitBlock()
     {
         var blockDatas = new Block[25];
-        // for (int i = 0; i < 25; i++)
-        // {
-        //     var block = new Block() { index = i, subBlockIndex = new int[4] { 0, 1, 3, 3 } };
-        //     blockDatas[i] = block;
-        // }
 
-        var length = girdWord.GridSize.x * girdWord.GridSize.y;
+        var block = new Block() { subBlockIndex = new int[4] { 0, 1, 0, 1 } };
+        blockDatas[0] = block;
+
+        var length = gridWord.gridSize.x * gridWord.gridSize.y;
         this.blocks = new BlockCtrl[length];
 
         for (int i = 0; i < blockDatas.Length; i++)
@@ -27,19 +25,15 @@ public partial class ItemManager
             var blockData = blockDatas[i];
             if (blockData.Equals(default(Block))) continue;
 
-            var pos = girdWord.ConvertIndexToWorldPos(blockDatas[i].index);
-            this.blocks[i] = SpawnBlock(pos, blockDatas[i].subBlockIndex);
-
-            var value = girdWord.GetFullValue();
-            girdWord.SetValueAt(pos, value);
+            var pos = gridWord.ConvertIndexToWorldPos(i);
+            this.blocks[i] = SpawnBlock(pos, blockDatas[i].subBlockIndex, _blocksParent);
         }
     }
 
-    public BlockCtrl SpawnBlock(float3 pos, int[] subBlockIndexs)
+    public BlockCtrl SpawnBlock(float3 pos, int[] subBlockIndexs, Transform parent)
     {
-        var block = Instantiate(blockPref, _blocksParent);
-        block.transform.position = pos;
-        block.Setup(girdWord.Scale, pos, subBlockIndexs);
+        var block = Instantiate(blockPref, parent);
+        block.InitBlock(gridWord.scale, pos, subBlockIndexs);
         return block;
     }
 }

@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2400281753042010853}
-  - component: {fileID: 8862995871192127555}
+  - component: {fileID: 6707827226086280221}
   m_Layer: 0
-  m_Name: GirdWord
+  m_Name: GridWord
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8862995871192127555
+--- !u!114 &6707827226086280221
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,16 +41,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 4676725845619460149}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ac97e342318bd34683e5b1ef2330922, type: 3}
+  m_Script: {fileID: 11500000, guid: 058f0c1f018d74a539536a934b595f23, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shouldDrawString: 1
-  smallestPossibleValue: 0
-  colorIndex: 0
-  degAroundX: 0
-  gridSize:
-    x: 0
-    y: 0
-  scale:
-    x: 0
-    y: 0
+  _emptyValue: 0
+  shouldDrawString: 0
+  color: {r: 0.25697404, g: 1, b: 0.08962262, a: 1}

@@ -273,10 +273,10 @@ MonoBehaviour:
   _blocksParent: {fileID: 7184835821519268472}
   _blockRemovesParent: {fileID: 4648524441502311238}
   blocks: []
-  floorBlockPref: {fileID: 8603447334052400803, guid: 5ab187e793b5ad540bc2fcfddfe47fd7, type: 3}
+  floorBlockPref: {fileID: -8101083761716962654, guid: 5ab187e793b5ad540bc2fcfddfe47fd7, type: 3}
   _floorBlocksParent: {fileID: 940980492748889304}
-  girdWordPref: {fileID: 8862995871192127555, guid: 48b93b9783abe194da4c57d04e996950, type: 3}
-  _girdWordParent: {fileID: 728246734602631915}
+  girdWordPref: {fileID: 6707827226086280221, guid: 48b93b9783abe194da4c57d04e996950, type: 3}
+  _gridWordParent: {fileID: 728246734602631915}
   centerPos:
     x: 0
     y: 0
