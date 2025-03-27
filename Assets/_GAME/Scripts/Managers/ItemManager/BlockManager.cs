@@ -16,7 +16,7 @@ public partial class ItemManager
 
         for (int i = 0; i < blocks.Length; i++)
         {
-            if (data.grids[i].GRIDSTATE != GRIDSTATE.BLOCK) continue;
+            if (data.grids[i].GRIDSTATE != (int)GRIDSTATE.BLOCK) continue;
 
             var pos = gridWord.ConvertIndexToWorldPos(i);
             blocks[i] = SpawnBlock(pos, data.grids[i].ColorIndexs, _blocksParent);

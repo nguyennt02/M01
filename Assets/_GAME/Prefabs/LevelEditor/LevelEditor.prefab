@@ -1040,6 +1040,10 @@ MonoBehaviour:
     x: 0
     y: 0
     z: 0
+  difficulty: 0
+  colorValues: 
+  availableBlocks: []
+  ratioDoubleAvailableBlock: 0
   levelSelection: 1
 --- !u!1 &3897376283889721777
 GameObject:

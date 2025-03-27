@@ -7,5 +7,9 @@ public class LevelDesignObject : ScriptableObject
     public int2 gridSize;
     public float2 scale;
     public float3 centerPos;
+    public int difficulty;
+    public int[] colorValues;
+    public AvailableBlock[] availableBlocks;
+    public int ratioDoubleAvailableBlock;
     public Grid[] grids;
 }

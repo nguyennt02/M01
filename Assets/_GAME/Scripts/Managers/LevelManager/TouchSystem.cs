@@ -26,7 +26,7 @@ public partial class LevelManager
         }
         else
         {
-            ItemManager.Instance.SpawnAvailableBlock(CurrentAvailableBlock.Position);
+            // ItemManager.Instance.SpawnAvailableBlock(CurrentAvailableBlock.Position);
             DropAvailableBlock();
         }
     }

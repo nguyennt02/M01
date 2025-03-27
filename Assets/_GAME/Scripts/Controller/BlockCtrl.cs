@@ -19,9 +19,15 @@ public class BlockCtrl : MonoBehaviour, IItem
     public SubBlockCtrl[] subBlockCtrls;
     public GridWord gridWord;
 
-    public void Initialize()
+    public void Initialize(float2 size, float3 position, LevelDesignObject data)
     {
-        throw new System.NotImplementedException();
+        Size = size;
+        SetPosition(position);
+        InitGrid();
+        var amountColor = RandomAmountColor((Difficulty)data.difficulty);
+        SubColorIndexs = CreateColorValues(amountColor, data.colorValues);
+        InitSubBlock(SubColorIndexs);
+        SetSizeSubBlocks();
     }
 
     public int ColorValue()
@@ -35,7 +41,7 @@ public class BlockCtrl : MonoBehaviour, IItem
         SetPosition(position);
 
         InitGrid();
-        this.SubColorIndexs = subColorIndexs;
+        SubColorIndexs = subColorIndexs;
         InitSubBlock(subColorIndexs);
         SetSizeSubBlocks();
     }
@@ -131,101 +137,76 @@ public class BlockCtrl : MonoBehaviour, IItem
         return sum / lst_index.Count;
     }
 
-    // void InitSubBlock(int[] subColorIndexs)
-    // {
-    //     subBlockCtrls = new SubBlockCtrl[subColorIndexs.Length];
-    //     var subBlockColors = ConverArrayToDirection(subColorIndexs);
+    int RandomAmountColor(Difficulty difficulty)
+    {
+        int randomNumber = UnityEngine.Random.Range(0, 101);
+        var ratio = GetRatioAt(difficulty);
 
-    //     foreach (var subBlockData in subBlockColors)
-    //     {
-    //         GetSubBlockDataAt(subBlockData.Value, out float3 pos, out float2 size);
-    //         var subBlock = SpawnSubBlock(pos, size, subBlockData);
-    //         SetValueAt(subBlockData, subBlock);
-    //     }
-    // }
+        int threshold = ratio.ratio1SubBlock;
+        if (randomNumber < threshold) return 1;
 
-    // Dictionary<int, List<int>> ConverArrayToDirection(int[] arr)
-    // {
-    //     Dictionary<int, List<int>> subBlockColors = new();
-    //     for (int i = 0; i < arr.Length; i++)
-    //     {
-    //         if (subBlockColors.ContainsKey(arr[i]))
-    //         {
-    //             subBlockColors[arr[i]].Add(i);
-    //         }
-    //         else
-    //         {
-    //             List<int> indexs = new();
-    //             indexs.Add(i);
+        threshold += ratio.ratio2SubBlock;
+        if (randomNumber < threshold) return 2;
 
-    //             subBlockColors.Add(arr[i], indexs);
-    //         }
-    //     }
-    //     return subBlockColors;
-    // }
+        threshold += ratio.ratio3SubBlock;
+        if (randomNumber < threshold) return 3;
 
-    // void GetSubBlockDataAt(List<int> indexs, out float3 pos, out float2 size)
-    // {
-    //     pos = float3.zero;
-    //     size = float2.zero;
-    //     if (indexs.Count == 1)
-    //     {
-    //         pos = girdWord.ConvertIndexToWorldPos(indexs[0]);
-    //         size = girdWord.Scale;
-    //     }
-    //     else if (indexs.Count == 2)
-    //     {
-    //         var pos1 = girdWord.ConvertIndexToWorldPos(indexs[0]);
-    //         var pos2 = girdWord.ConvertIndexToWorldPos(indexs[1]);
-    //         pos = (pos1 + pos2) / 2;
+        return 4;
+    }
 
-    //         var dir = new Vector2(pos2.x - pos1.x, pos2.y - pos1.y).normalized;
-    //         if (dir.x != 0 && dir.y == 0)
-    //         {
-    //             size = new float2(girdWord.Scale.x * 2, girdWord.Scale.y);
-    //         }
-    //         else if (dir.x == 0 && dir.y != 0)
-    //         {
-    //             size = new float2(girdWord.Scale.x, girdWord.Scale.y * 2);
-    //         }
-    //     }
-    //     else if (indexs.Count == 4)
-    //     {
-    //         pos = Position;
-    //         size = girdWord.Scale * 2;
-    //     }
-    // }
+    Ratio GetRatioAt(Difficulty difficulty)
+    {
+        Ratio ratio = new();
+        switch (difficulty)
+        {
+            case Difficulty.Easy:
+                ratio.ratio1SubBlock = 40;
+                ratio.ratio2SubBlock = 20;
+                ratio.ratio3SubBlock = 15;
+                break;
+            case Difficulty.Medium:
+                ratio.ratio1SubBlock = 30;
+                ratio.ratio2SubBlock = 20;
+                ratio.ratio3SubBlock = 20;
+                break;
+            case Difficulty.Hard:
+                ratio.ratio1SubBlock = 20;
+                ratio.ratio2SubBlock = 20;
+                ratio.ratio3SubBlock = 20;
+                break;
+        }
+        return ratio;
+    }
 
-    // void SetValueAt(KeyValuePair<int, List<int>> subBlockData, SubBlockCtrl subBlock)
-    // {
-    //     foreach (var index in subBlockData.Value)
-    //     {
-    //         var pos = girdWord.ConvertIndexToWorldPos(index);
-    //         girdWord.SetValueAt(pos, subBlockData.Key);
-    //         subBlockCtrls[index] = subBlock;
-    //     }
-    // }
+    public int[] CreateColorValues(int amount, int[] colorValues)
+    {
+        int[] needColors = NeedColor(colorValues, amount);
+        List<int> needColorsClone = new(needColors);
+        int[] colors = new int[4];
+        for (int i = 0; i < colors.Length; i++)
+        {
+            if (needColorsClone.Count == 0) needColorsClone = new(needColors);
+            var randomIndex = UnityEngine.Random.Range(0, needColorsClone.Count);
+            colors[i] = needColorsClone[randomIndex];
+            needColorsClone.RemoveAt(randomIndex);
+        }
+        return colors;
+    }
 
-    // public void UpdateBlock()
-    // {
-    //     if (_subBlockParents.childCount == 0)
-    //     {
-    //         var parent = ItemManager.Instance.BlockRemovesParent;
-    //         transform.SetParent(parent);
-    //         gameObject.SetActive(false);
-    //         var girdWord = ItemManager.Instance.gridWord;
-    //         var index = girdWord.ConvertWorldPosToIndex(Position);
-    //         ItemManager.Instance.blocks[index] = null;
-    //         var emptyValue = girdWord.GetEmptyValue();
-    //         girdWord.SetValueAt(index, emptyValue);
-    //         return;
-    //     }
-    //     var subBlockColors = ConverArrayToDirection(SubColorIndexs);
-    //     foreach (var subBlockData in subBlockColors)
-    //     {
-    //         GetSubBlockDataAt(subBlockData.Value, out float3 pos, out float2 size);
-    //         var subBlock = subBlockCtrls[subBlockData.Value[0]];
-    //         subBlock.UpdateSubBlock(pos, size, subBlockData.Value.ToArray());
-    //     }
-    // }
+    int[] NeedColor(int[] colorValues, int amount)
+    {
+        int[] needColors = new int[amount];
+        for (int i = 0; i < needColors.Length; i++)
+        {
+            while (true)
+            {
+                var randomIndex = UnityEngine.Random.Range(0, colorValues.Length);
+                var colorValue = colorValues[randomIndex];
+                if (needColors.Contains(colorValue)) continue;
+                needColors[i] = colorValue;
+                break;
+            }
+        }
+        return needColors;
+    }
 }

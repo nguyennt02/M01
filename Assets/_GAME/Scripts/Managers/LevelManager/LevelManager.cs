@@ -47,6 +47,6 @@ public partial class LevelManager : MonoBehaviour
         ItemManager.Instance.InitGird(CurrentLevelDesignObject);
         ItemManager.Instance.InitFloorBlock(CurrentLevelDesignObject);
         ItemManager.Instance.InitBlock(CurrentLevelDesignObject);
-        ItemManager.Instance.InitAvailableBlock();
+        ItemManager.Instance.InitAvailableBlock(CurrentLevelDesignObject);
     }
 }

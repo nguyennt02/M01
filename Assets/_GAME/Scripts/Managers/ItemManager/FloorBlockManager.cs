@@ -14,7 +14,7 @@ public partial class ItemManager
         floorBlocks = new FloorBlockCtrl[data.grids.Length];
         for (int i = 0; i < floorBlocks.Length; i++)
         {
-            if (data.grids[i].GRIDSTATE == GRIDSTATE.REMOVE) continue;
+            if (data.grids[i].GRIDSTATE == (int)GRIDSTATE.REMOVE) continue;
             var pos = gridWord.ConvertIndexToWorldPos(i);
             floorBlocks[i] = SpawnFloorBlockAt(pos);
             floorBlocks[i].InitFloor(gridWord.scale);

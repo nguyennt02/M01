@@ -25,7 +25,7 @@ public class GridStateSystem : MonoBehaviour
         {
             if (gridStateControls[i])
             {
-                gridStateControls[i].SetGridState(data.grids[i].GRIDSTATE);
+                gridStateControls[i].SetGridState((GRIDSTATE)data.grids[i].GRIDSTATE);
                 gridStateControls[i].ColorIndexs = data.grids[i].ColorIndexs;
             }
         }

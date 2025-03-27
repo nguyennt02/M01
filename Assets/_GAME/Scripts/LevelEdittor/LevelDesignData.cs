@@ -32,11 +32,43 @@ public struct LevelDesignData
     public int2 gridSize;
     public float2 scale;
     public float3 centerPos;
+    public int difficulty;
+    public int[] colorValues;
+    public AvailableBlock[] availableBlocks;
+    public int ratioDoubleAvailableBlock;
     public Grid[] grids;
 }
 [Serializable]
 public struct Grid
 {
-    public GRIDSTATE GRIDSTATE;
+    public int GRIDSTATE;
     public int[] ColorIndexs;
+}
+
+[Serializable]
+public struct AvailableBlock
+{
+    public int GRIDSTATE;
+    public int ratio;
+}
+
+[Serializable]
+public struct AvailableBlockEditor
+{
+    public GRIDSTATE GRIDSTATE;
+    public int ratio;
+}
+
+public enum Difficulty
+{
+    Easy,
+    Medium,
+    Hard
+}
+
+public struct Ratio
+{
+    public int ratio1SubBlock;
+    public int ratio2SubBlock;
+    public int ratio3SubBlock;
 }

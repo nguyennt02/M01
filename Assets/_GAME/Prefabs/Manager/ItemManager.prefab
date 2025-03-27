@@ -267,6 +267,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5ce2eff9a9cd7c429096ad7d9315bac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  availableBlockPref: {fileID: 6341186799029739532, guid: 2a221ee66e2f84005bb8734d5447c7e6, type: 3}
   _availableSpawnPos: {fileID: 3376095248427987874}
   _availableBlockParent: {fileID: 5422089843455620353}
   blockPref: {fileID: 658804778417449461, guid: aac26c149c8c83c479759754fc6f305b, type: 3}
@@ -277,10 +278,6 @@ MonoBehaviour:
   _floorBlocksParent: {fileID: 940980492748889304}
   girdWordPref: {fileID: 6707827226086280221, guid: 48b93b9783abe194da4c57d04e996950, type: 3}
   _gridWordParent: {fileID: 728246734602631915}
-  centerPos:
-    x: 0
-    y: 0
-    z: 0
 --- !u!1 &7729974929875141883
 GameObject:
   m_ObjectHideFlags: 0
