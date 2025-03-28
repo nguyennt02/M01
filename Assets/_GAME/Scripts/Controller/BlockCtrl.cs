@@ -8,6 +8,7 @@ public class BlockCtrl : MonoBehaviour, IItem
     [SerializeField] GridWord gridWordPref;
     [SerializeField] Transform _gridWordParent;
     public Transform GridWordParent { get => _gridWordParent; }
+    public int Index;
     public float2 Size { get; private set; }
     public float3 Position { get; private set; }
     [SerializeField] SubBlockCtrl subBlockPref;
@@ -98,7 +99,7 @@ public class BlockCtrl : MonoBehaviour, IItem
         return subBlock;
     }
 
-    void SetSizeSubBlocks()
+    public void SetSizeSubBlocks()
     {
         HashSet<SubBlockCtrl> subBlocks = ConvertArrayToHashSet(subBlockCtrls);
         foreach (var subBlock in subBlocks)
@@ -111,7 +112,7 @@ public class BlockCtrl : MonoBehaviour, IItem
     {
         var lst_Index = subBlock.Lst_Index;
         var pos = GetPosSubBlock(lst_Index);
-        var distance = new float2(math.abs(pos.x - subBlock.Position.x), math.abs(pos.y - subBlock.Position.y));
+        var distance = new float2(math.abs(pos.x - subBlock.transform.position.x), math.abs(pos.y - subBlock.transform.position.y));
         var size = subBlock.Size + distance * 2;
         subBlock.SetPosition(pos);
         subBlock.SetSize(size);
@@ -216,10 +217,25 @@ public class BlockCtrl : MonoBehaviour, IItem
         var gridWord = ItemManager.Instance.gridWord;
         var blocksParent = ItemManager.Instance.BlocksParent;
         ItemManager.Instance.blocks[index] = this;
+        Index = index;
         transform.SetParent(blocksParent);
         SetPosition(wordPos);
 
         var value = gridWord.EmptyValue + (int)GRIDSTATE.BLOCK;
         gridWord.SetValueAt(wordPos, value);
+    }
+
+    public void Remove()
+    {
+        if (_subBlockParents.childCount == 0)
+        {
+            ItemManager.Instance.blocks[Index] = null;
+            var parent = ItemManager.Instance.BlockRemovesParent;
+            transform.SetParent(parent);
+            gameObject.SetActive(false);
+
+            var value = ItemManager.Instance.gridWord.EmptyValue;
+            ItemManager.Instance.gridWord.SetValueAt(Index, value);
+        }
     }
 }

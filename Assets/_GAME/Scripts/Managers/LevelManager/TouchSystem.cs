@@ -23,19 +23,22 @@ public partial class LevelManager
         if (CurrentAvailableBlock.isDrop())
         {
             CurrentAvailableBlock.Drop();
-            
+
             ItemManager.Instance.RemoveAvailableBlockOfList(CurrentAvailableBlock);
             var data = GetCurrentLevelDesignObject();
             ItemManager.Instance.InitAvailableBlock(data);
+
+            CheckBlock(out Dictionary<int, HashSet<SubBlockCtrl>> needSubBlocks);
+            RemoveSubBlock(needSubBlocks);
+            RemoveBlock();
+            UpdateValueBlock();
+            UpdateSizeBlock();
         }
         else
         {
             CurrentAvailableBlock.transform.position = CurrentAvailableBlock.Position;
         }
         CurrentAvailableBlock = null;
-
-        CheckBlock(out Dictionary<int, HashSet<SubBlockCtrl>> needSubBlocks);
-        RemoveSubBlock(needSubBlocks);
     }
 
     void GrabAvailableBlockFrom(Collider2D[] colliders)

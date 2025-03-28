@@ -20,6 +20,7 @@ public partial class ItemManager
 
             var pos = gridWord.ConvertIndexToWorldPos(i);
             blocks[i] = SpawnBlock(pos, data.grids[i].ColorIndexs, _blocksParent);
+            blocks[i].Index = i;
 
             var value = gridWord.EmptyValue + (int)GRIDSTATE.BLOCK;
             gridWord.SetValueAt(pos, value);

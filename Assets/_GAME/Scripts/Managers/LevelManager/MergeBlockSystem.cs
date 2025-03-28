@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public partial class LevelManager
@@ -51,7 +52,18 @@ public partial class LevelManager
         }
     }
 
-    public void UpdateBlock()
+    public void RemoveBlock()
+    {
+        var blocks = ItemManager.Instance.blocks;
+        for (int i = 0; i < blocks.Length; i++)
+        {
+            var block = blocks[i];
+            if (block == null) continue;
+            block.Remove();
+        }
+    }
+
+    public void UpdateValueBlock()
     {
         var blocks = ItemManager.Instance.blocks;
         for (int i = 0; i < blocks.Length; i++)
@@ -64,18 +76,43 @@ public partial class LevelManager
                 var subBlock = subBlocks[j];
                 if (subBlock != null) continue;
                 var neighbors = block.gridWord.FindNeighborAt(j);
-                for (int k = 0; k < neighbors.Length; k++)
-                {
-                    if(block.gridWord.IsPosOutsideAt(neighbors[k])) continue;
-                    var neighborIndex = block.gridWord.ConvertWorldPosToIndex(neighbors[k]);
-                    var neighborSubBlock = subBlocks[neighborIndex];
-                    if (neighborSubBlock == null) continue;
-                    if (neighborSubBlock.Lst_Index.Count != 1) continue;
-                    neighborSubBlock.AddIndex(j);
-                    block.subBlockCtrls[j] = neighborSubBlock;
-                    block.gridWord.SetValueAt(j,neighborSubBlock.ColorIndex);
-                }
+                var needSubBlock = FindNeedSubBlock(neighbors, block);
+                needSubBlock.AddIndex(j);
+                block.subBlockCtrls[j] = needSubBlock;
+                block.gridWord.SetValueAt(j, needSubBlock.ColorIndex);
             }
+        }
+    }
+
+    SubBlockCtrl FindNeedSubBlock(float3[] neighbors, BlockCtrl block)
+    {
+        var gridWord = block.gridWord;
+        var subBlockCtrls = block.subBlockCtrls;
+        for (int i = 0; i < neighbors.Length; i++)
+        {
+            if (gridWord.IsPosOutsideAt(neighbors[i])) continue;
+            var neighborIndex = gridWord.ConvertWorldPosToIndex(neighbors[i]);
+            var neighborSubBlock = subBlockCtrls[neighborIndex];
+            if (neighborSubBlock == null) continue;
+            if (neighborSubBlock.Lst_Index.Count != 1) continue;
+            return neighborSubBlock;
+        }
+        for (int j = 0; j < block.subBlockCtrls.Length; j++)
+        {
+            if (subBlockCtrls[j] == null) continue;
+            return subBlockCtrls[j];
+        }
+        return null;
+    }
+
+    public void UpdateSizeBlock()
+    {
+        var blocks = ItemManager.Instance.blocks;
+        for (int i = 0; i < blocks.Length; i++)
+        {
+            var block = blocks[i];
+            if (block == null) continue;
+            block.SetSizeSubBlocks();
         }
     }
 }
