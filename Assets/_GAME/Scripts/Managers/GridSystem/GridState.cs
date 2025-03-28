@@ -57,7 +57,7 @@ public partial class GridWord
     {
         if (IsGridPosOutsideAt(gridPos)) return true;
         var index = ConvertGridPosToIndex(gridPos);
-        if (_grid[index] >= _emptyValue) return true;
+        if (_grid[index] > _emptyValue) return true;
         return false;
     }
 }

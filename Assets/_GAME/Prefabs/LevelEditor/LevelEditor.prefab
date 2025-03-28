@@ -1044,6 +1044,7 @@ MonoBehaviour:
   colorValues: 
   availableBlocks: []
   ratioDoubleAvailableBlock: 0
+  amountBlock: 0
   levelSelection: 1
 --- !u!1 &3897376283889721777
 GameObject:

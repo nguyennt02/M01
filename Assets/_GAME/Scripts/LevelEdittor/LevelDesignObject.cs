@@ -11,5 +11,6 @@ public class LevelDesignObject : ScriptableObject
     public int[] colorValues;
     public AvailableBlock[] availableBlocks;
     public int ratioDoubleAvailableBlock;
+    public int amountBlock;
     public Grid[] grids;
 }

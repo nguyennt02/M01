@@ -15,6 +15,7 @@ public class LevelEdittor : MonoBehaviour
    [SerializeField] int[] colorValues;
    [SerializeField] AvailableBlockEditor[] availableBlocks;
    [SerializeField] int ratioDoubleAvailableBlock;
+   [SerializeField] int amountBlock;
 
    [Range(1, 10)]
    [SerializeField] int levelSelection = 1;
@@ -42,6 +43,7 @@ public class LevelEdittor : MonoBehaviour
          levelDesignObjects[i].colorValues = _levelDesignData.data[i].colorValues;
          levelDesignObjects[i].availableBlocks = _levelDesignData.data[i].availableBlocks;
          levelDesignObjects[i].ratioDoubleAvailableBlock = _levelDesignData.data[i].ratioDoubleAvailableBlock;
+         levelDesignObjects[i].amountBlock = _levelDesignData.data[i].amountBlock;
       }
    }
    [MethodButton]
@@ -53,6 +55,7 @@ public class LevelEdittor : MonoBehaviour
       difficulty = (Difficulty)CurrentLevelDesignObject.difficulty;
       colorValues = CurrentLevelDesignObject.colorValues;
       ratioDoubleAvailableBlock = CurrentLevelDesignObject.ratioDoubleAvailableBlock;
+      amountBlock = CurrentLevelDesignObject.amountBlock;
 
       availableBlocks = new AvailableBlockEditor[CurrentLevelDesignObject.availableBlocks.Length];
       for (int i = 0; i < availableBlocks.Length; i++)
@@ -73,6 +76,7 @@ public class LevelEdittor : MonoBehaviour
       CurrentLevelDesignObject.difficulty = (int)difficulty;
       CurrentLevelDesignObject.colorValues = colorValues;
       CurrentLevelDesignObject.ratioDoubleAvailableBlock = ratioDoubleAvailableBlock;
+      CurrentLevelDesignObject.amountBlock = amountBlock;
 
       var availableBlocks = new AvailableBlock[this.availableBlocks.Length];
       for (int i = 0; i < availableBlocks.Length; i++)
@@ -107,6 +111,7 @@ public class LevelEdittor : MonoBehaviour
          _data[i].grids = levelDesignObjects[i].grids;
          _data[i].availableBlocks = levelDesignObjects[i].availableBlocks;
          _data[i].ratioDoubleAvailableBlock = levelDesignObjects[i].ratioDoubleAvailableBlock;
+         _data[i].amountBlock = levelDesignObjects[i].amountBlock;
       }
       var _levelDesignDatas = new LevelDesignDatas()
       {

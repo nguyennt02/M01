@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: LevelDesignObject
   m_EditorClassIdentifier: 
   gridSize:
-    x: 3
-    y: 3
+    x: 5
+    y: 5
   scale:
     x: 2
     y: 2
@@ -27,7 +27,8 @@ MonoBehaviour:
   availableBlocks:
   - GRIDSTATE: 1
     ratio: 100
-  ratioDoubleAvailableBlock: 10
+  ratioDoubleAvailableBlock: 40
+  amountBlock: 2
   grids:
   - GRIDSTATE: 0
     ColorIndexs: 
@@ -45,5 +46,37 @@ MonoBehaviour:
     ColorIndexs: 
   - GRIDSTATE: 0
     ColorIndexs: 
-  - GRIDSTATE: 1
-    ColorIndexs: 00000000000000000000000000000000
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 
+  - GRIDSTATE: 0
+    ColorIndexs: 

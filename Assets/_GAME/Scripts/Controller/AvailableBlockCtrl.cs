@@ -54,9 +54,9 @@ public class AvailableBlockCtrl : MonoBehaviour
             var item = Instantiate(randomItem, _availableBlockParent);
             if (item.TryGetComponent(out IItem itemControl))
             {
+                items[i] = itemControl;
                 var pos = gridWord.ConvertIndexToWorldPos(i);
                 itemControl.Initialize(gridWord.scale, pos, data);
-                items[i] = itemControl;
             }
         }
     }
@@ -68,9 +68,35 @@ public class AvailableBlockCtrl : MonoBehaviour
         for (int i = 0; i < data.availableBlocks.Length; i++)
         {
             threshold += data.availableBlocks[i].ratio;
-            if (randomNumber < threshold) 
+            if (randomNumber < threshold)
                 return itemPrefs[data.availableBlocks[i].GRIDSTATE];
         }
         return itemPrefs[data.availableBlocks[0].GRIDSTATE];
+    }
+
+    public bool isDrop()
+    {
+        var gridWord = ItemManager.Instance.gridWord;
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (gridWord.IsPosOccupiedAt(items[i].CurrentPosition))
+                return false;
+        }
+        return true;
+    }
+
+    public void Drop()
+    {
+        var gridWord = ItemManager.Instance.gridWord;
+        for (int i = 0; i < items.Length; i++)
+        {
+            if (!gridWord.IsPosOccupiedAt(items[i].CurrentPosition))
+            {
+                var blockPos = items[i].CurrentPosition;
+                var index = gridWord.ConvertWorldPosToIndex(blockPos);
+                var wordPos = gridWord.ConvertIndexToWorldPos(index);
+                items[i].Drop(wordPos, index);
+            }
+        }
     }
 }

@@ -11,15 +11,17 @@ public partial class ItemManager
     public Transform AvailableSpawnPos { get => _availableSpawnPos; }
     [SerializeField] Transform _availableBlockParent;
     public Transform AvailableBlockParent { get => _availableBlockParent; }
+    List<AvailableBlockCtrl> _availableBlocks = new();
 
     public void InitAvailableBlock(LevelDesignObject data)
     {
-        int amountBlock = 2;
+        if (_availableBlocks.Count > 0) return;
         foreach (Transform pos in _availableSpawnPos)
         {
-            if (pos.name.Equals($"{amountBlock}BlockPos"))
+            if (pos.name.Equals($"{data.amountBlock}BlockPos"))
             {
-                SpawnAvailableBlock(pos.position, data);
+                var block = SpawnAvailableBlock(pos.position, data);
+                _availableBlocks.Add(block);
             }
         }
     }
@@ -31,6 +33,11 @@ public partial class ItemManager
         var size = gridWord.scale * gridSize;
         block.InitAvailableBlock(size, pos, gridSize, data);
         return block;
+    }
+
+    public void RemoveAvailableBlockOfList(AvailableBlockCtrl availableBlock)
+    {
+        _availableBlocks.Remove(availableBlock);
     }
 
     int2 RandomGridSize(LevelDesignObject data)

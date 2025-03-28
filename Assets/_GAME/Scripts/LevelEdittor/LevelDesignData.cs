@@ -36,6 +36,7 @@ public struct LevelDesignData
     public int[] colorValues;
     public AvailableBlock[] availableBlocks;
     public int ratioDoubleAvailableBlock;
+    public int amountBlock;
     public Grid[] grids;
 }
 [Serializable]

@@ -16,6 +16,8 @@ public class BlockCtrl : MonoBehaviour, IItem
     public Transform SubBlockParents { get => _subBlockParents; }
     [SerializeField] Transform _subBlockRemoveParent;
     public Transform SubBlockRemoveParent { get => _subBlockRemoveParent; }
+    public float3 CurrentPosition => transform.position;
+
     public SubBlockCtrl[] subBlockCtrls;
     public GridWord gridWord;
 
@@ -208,5 +210,17 @@ public class BlockCtrl : MonoBehaviour, IItem
             }
         }
         return needColors;
+    }
+
+    public void Drop(float3 wordPos, int index)
+    {
+        var gridWord = ItemManager.Instance.gridWord;
+        var blocksParent = ItemManager.Instance.BlocksParent;
+        ItemManager.Instance.blocks[index] = this;
+        transform.SetParent(blocksParent);
+        SetPosition(wordPos);
+
+        var value = gridWord.EmptyValue + (int)GRIDSTATE.BLOCK;
+        gridWord.SetValueAt(wordPos, value);
     }
 }
