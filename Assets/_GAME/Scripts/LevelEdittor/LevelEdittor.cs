@@ -1,5 +1,6 @@
 using Nenn.InspectorEnhancements.Runtime.Attributes;
 using Unity.Mathematics;
+using UnityEditor;
 using UnityEngine;
 
 public class LevelEdittor : MonoBehaviour
@@ -90,6 +91,11 @@ public class LevelEdittor : MonoBehaviour
       }
       CurrentLevelDesignObject.grids = grids;
 
+#if UNITY_EDITOR
+      EditorUtility.SetDirty(CurrentLevelDesignObject);
+      AssetDatabase.SaveAssets();
+#endif
+
       var _data = new LevelDesignData[levelDesignObjects.Length];
       for (int i = 0; i < _data.Length; i++)
       {
@@ -107,5 +113,6 @@ public class LevelEdittor : MonoBehaviour
          data = _data
       };
       Utility.SaveToFile<LevelDesignDatas>(_levelDesignDatas, KeyStr.NAME_FILE_LEVEL_DESIGN_TXT);
+      Debug.Log("Save success");
    }
 }

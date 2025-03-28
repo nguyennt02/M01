@@ -33,10 +33,9 @@ public class GridStateSystem : MonoBehaviour
 
     void RemoveGrid()
     {
-        for (int i = 0; i < gridStateControls.Length; i++)
+        for (int i = transform.childCount -1; i >= 0; --i)
         {
-            if (gridStateControls[i])
-                DestroyImmediate(gridStateControls[i].gameObject);
+            DestroyImmediate(transform.GetChild(i).gameObject);
         }
     }
 }

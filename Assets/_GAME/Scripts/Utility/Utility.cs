@@ -3,6 +3,16 @@ using UnityEngine;
 
 public static class Utility
 {
+    public static string GetRawDataPathFrom(string fileName)
+    {
+        string dataPath;
+#if UNITY_EDITOR
+        dataPath = Path.Combine(Application.dataPath, $"{fileName}.txt");
+#else
+        dataPath = Path.Combine(Application.persistentDataPath, $"{fileName}.txt");
+#endif
+        return dataPath;
+    }
     public static void SaveToFile<T>(T data, string fileName)
     {
         string json = JsonUtility.ToJson(data);
@@ -20,13 +30,13 @@ public static class Utility
 
     static void WriteAlTo(string json, string fileName)
     {
-        string path = Path.Combine(Application.persistentDataPath, fileName);
+        string path = GetRawDataPathFrom(fileName);
         File.WriteAllText(path, json);
     }
 
     static string LoadDataFrom(string fileName)
     {
-        string path = Path.Combine(Application.persistentDataPath, fileName);
+        string path = GetRawDataPathFrom(fileName);
         if (File.Exists(path))
         {
             Debug.Log("load data sucess :" + path);
