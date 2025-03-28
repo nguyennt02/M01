@@ -11,6 +11,8 @@ public partial class ItemManager
     public Transform AvailableSpawnPos { get => _availableSpawnPos; }
     [SerializeField] Transform _availableBlockParent;
     public Transform AvailableBlockParent { get => _availableBlockParent; }
+    [SerializeField] Transform _availableBlockRemoveParent;
+    public Transform AvailableBlockRemoveParent { get => _availableBlockRemoveParent; }
     List<AvailableBlockCtrl> _availableBlocks = new();
 
     public void InitAvailableBlock(LevelDesignObject data)
@@ -38,6 +40,8 @@ public partial class ItemManager
     public void RemoveAvailableBlockOfList(AvailableBlockCtrl availableBlock)
     {
         _availableBlocks.Remove(availableBlock);
+        availableBlock.transform.SetParent(_availableBlockRemoveParent);
+        availableBlock.gameObject.SetActive(false);
     }
 
     int2 RandomGridSize(LevelDesignObject data)

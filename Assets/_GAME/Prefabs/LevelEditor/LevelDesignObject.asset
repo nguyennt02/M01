@@ -78,5 +78,5 @@ MonoBehaviour:
     ColorIndexs: 
   - GRIDSTATE: 0
     ColorIndexs: 
-  - GRIDSTATE: 0
-    ColorIndexs: 
+  - GRIDSTATE: 1
+    ColorIndexs: 01000000000000000100000000000000
