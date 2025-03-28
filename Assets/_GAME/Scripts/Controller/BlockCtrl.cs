@@ -11,7 +11,6 @@ public class BlockCtrl : MonoBehaviour, IItem
     public float2 Size { get; private set; }
     public float3 Position { get; private set; }
     [SerializeField] SubBlockCtrl subBlockPref;
-    public int[] SubColorIndexs { get; private set; }
     [SerializeField] Transform _subBlockParents;
     public Transform SubBlockParents { get => _subBlockParents; }
     [SerializeField] Transform _subBlockRemoveParent;
@@ -27,8 +26,8 @@ public class BlockCtrl : MonoBehaviour, IItem
         SetPosition(position);
         InitGrid();
         var amountColor = RandomAmountColor((Difficulty)data.difficulty);
-        SubColorIndexs = CreateColorValues(amountColor, data.colorValues);
-        InitSubBlock(SubColorIndexs);
+        var subColorIndexs = CreateColorValues(amountColor, data.colorValues);
+        InitSubBlock(subColorIndexs);
         SetSizeSubBlocks();
     }
 
@@ -43,7 +42,6 @@ public class BlockCtrl : MonoBehaviour, IItem
         SetPosition(position);
 
         InitGrid();
-        SubColorIndexs = subColorIndexs;
         InitSubBlock(subColorIndexs);
         SetSizeSubBlocks();
     }
@@ -71,6 +69,7 @@ public class BlockCtrl : MonoBehaviour, IItem
             if (subBlockCtrls[i] == null)
             {
                 var subBlockValue = subColorIndexs[i];
+                gridWord.SetValueAt(i, subBlockValue);
                 var neighbors = gridWord.FindNeighborAt(i);
                 for (int j = 0; j < neighbors.Length; j++)
                 {

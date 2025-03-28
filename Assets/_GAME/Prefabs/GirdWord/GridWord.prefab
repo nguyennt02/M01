@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _emptyValue: 0
-  shouldDrawString: 0
+  shouldDrawString: 1
   color: {r: 0.25697404, g: 1, b: 0.08962262, a: 1}

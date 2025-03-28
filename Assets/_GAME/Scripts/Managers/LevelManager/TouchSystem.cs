@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -32,6 +33,9 @@ public partial class LevelManager
             CurrentAvailableBlock.transform.position = CurrentAvailableBlock.Position;
         }
         CurrentAvailableBlock = null;
+
+        CheckBlock(out Dictionary<int, HashSet<SubBlockCtrl>> needSubBlocks);
+        RemoveSubBlock(needSubBlocks);
     }
 
     void GrabAvailableBlockFrom(Collider2D[] colliders)

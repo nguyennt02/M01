@@ -44,17 +44,16 @@ public class SubBlockCtrl : MonoBehaviour
         Lst_Index.Add(index);
     }
 
-    // public void UpdateSubBlock(float3 pos, float2 size, int[] indexs)
-    // {
-    //     if (size.Equals(float2.zero) || pos.Equals(float2.zero))
-    //         Debug.Log("du lieu bi loi", gameObject);
+    public void Remove()
+    {
+        transform.SetParent(BlockParent.SubBlockRemoveParent);
+        gameObject.SetActive(false);
 
-    //     Position = pos;
-    //     transform.position = pos;
-
-    //     Size = size;
-    //     SetSize(size);
-
-    //     Indexs = indexs;
-    // }
+        var value = BlockParent.gridWord.EmptyValue;
+        for (int i = 0; i < Lst_Index.Count; i++)
+        {
+            BlockParent.subBlockCtrls[Lst_Index[i]] = null;
+            BlockParent.gridWord.SetValueAt(Lst_Index[i], value);
+        }
+    }
 }
