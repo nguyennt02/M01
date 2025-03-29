@@ -8,15 +8,14 @@ public class BlockCtrl : MonoBehaviour, IItem
     [SerializeField] GridWord gridWordPref;
     [SerializeField] Transform _gridWordParent;
     public Transform GridWordParent { get => _gridWordParent; }
-    public int Index;
+    public int Index { get; private set; }
     public float2 Size { get; private set; }
-    public float3 Position { get; private set; }
+    public float3 Position => transform.position;
     [SerializeField] SubBlockCtrl subBlockPref;
     [SerializeField] Transform _subBlockParents;
     public Transform SubBlockParents { get => _subBlockParents; }
     [SerializeField] Transform _subBlockRemoveParent;
     public Transform SubBlockRemoveParent { get => _subBlockRemoveParent; }
-    public float3 CurrentPosition => transform.position;
 
     public SubBlockCtrl[] subBlockCtrls;
     public GridWord gridWord;
@@ -32,11 +31,6 @@ public class BlockCtrl : MonoBehaviour, IItem
         SetSizeSubBlocks();
     }
 
-    public int ColorValue()
-    {
-        throw new System.NotImplementedException();
-    }
-
     public void InitBlock(float2 size, float3 position, int[] subColorIndexs)
     {
         Size = size;
@@ -47,9 +41,13 @@ public class BlockCtrl : MonoBehaviour, IItem
         SetSizeSubBlocks();
     }
 
+    public void SetIndex(int index)
+    {
+        Index = index;
+    }
+
     public void SetPosition(float3 pos)
     {
-        Position = pos;
         transform.position = pos;
     }
 
@@ -112,7 +110,7 @@ public class BlockCtrl : MonoBehaviour, IItem
     {
         var lst_Index = subBlock.Lst_Index;
         var pos = GetPosSubBlock(lst_Index);
-        var distance = new float2(math.abs(pos.x - subBlock.transform.position.x), math.abs(pos.y - subBlock.transform.position.y));
+        var distance = new float2(math.abs(pos.x - subBlock.Position.x), math.abs(pos.y - subBlock.Position.y));
         var size = subBlock.Size + distance * 2;
         subBlock.SetPosition(pos);
         subBlock.SetSize(size);
@@ -214,10 +212,10 @@ public class BlockCtrl : MonoBehaviour, IItem
 
     public void Drop(float3 wordPos, int index)
     {
+        SetIndex(index);
         var gridWord = ItemManager.Instance.gridWord;
         var blocksParent = ItemManager.Instance.BlocksParent;
         ItemManager.Instance.blocks[index] = this;
-        Index = index;
         transform.SetParent(blocksParent);
         SetPosition(wordPos);
 

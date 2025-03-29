@@ -10,7 +10,7 @@ public class AvailableBlockCtrl : MonoBehaviour
     public Transform AvailableBlockParent { get => _availableBlockParent; }
     [SerializeField] GameObject[] itemPrefs;
     public float2 Size { get; private set; }
-    public float3 Position { get; private set; }
+    public float3 StartPosition { get; private set; }
     IItem[] items;
     GridWord gridWord;
 
@@ -33,7 +33,7 @@ public class AvailableBlockCtrl : MonoBehaviour
 
     public void SetPosition(float3 position)
     {
-        Position = position;
+        StartPosition = position;
         transform.position = position;
     }
 
@@ -41,7 +41,7 @@ public class AvailableBlockCtrl : MonoBehaviour
     {
         var size = new float2(Size.x / gridSize.x, Size.y / gridSize.y);
         gridWord = Instantiate(gridWordPref, _gridWordParent);
-        gridWord.InitGridWord(gridSize, size, Position);
+        gridWord.InitGridWord(gridSize, size, StartPosition);
     }
 
     void InitBlock(LevelDesignObject data)
@@ -79,7 +79,7 @@ public class AvailableBlockCtrl : MonoBehaviour
         var gridWord = ItemManager.Instance.gridWord;
         for (int i = 0; i < items.Length; i++)
         {
-            if (gridWord.IsPosOccupiedAt(items[i].CurrentPosition))
+            if (gridWord.IsPosOccupiedAt(items[i].Position))
                 return false;
         }
         return true;
@@ -90,9 +90,9 @@ public class AvailableBlockCtrl : MonoBehaviour
         var gridWord = ItemManager.Instance.gridWord;
         for (int i = 0; i < items.Length; i++)
         {
-            if (!gridWord.IsPosOccupiedAt(items[i].CurrentPosition))
+            if (!gridWord.IsPosOccupiedAt(items[i].Position))
             {
-                var blockPos = items[i].CurrentPosition;
+                var blockPos = items[i].Position;
                 var index = gridWord.ConvertWorldPosToIndex(blockPos);
                 var wordPos = gridWord.ConvertIndexToWorldPos(index);
                 items[i].Drop(wordPos, index);
