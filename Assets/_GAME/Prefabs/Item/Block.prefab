@@ -41,7 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1150137149330981124}
   - component: {fileID: 658804778417449461}
-  - component: {fileID: 5812408774764014289}
   m_Layer: 0
   m_Name: Block
   m_TagString: Untagged
@@ -86,18 +85,6 @@ MonoBehaviour:
   _subBlockRemoveParent: {fileID: 4799411066260271409}
   subBlockCtrls: []
   gridWord: {fileID: 0}
---- !u!114 &5812408774764014289
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3302467855552994490}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3505d125a53d94e15a2688967ac3c919, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6010750187455992903
 GameObject:
   m_ObjectHideFlags: 0

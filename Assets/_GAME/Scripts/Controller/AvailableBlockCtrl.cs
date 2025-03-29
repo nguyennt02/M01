@@ -68,9 +68,9 @@ public class AvailableBlockCtrl : MonoBehaviour
         {
             threshold += data.availableBlocks[i].ratio;
             if (randomNumber < threshold)
-                return itemPrefs[data.availableBlocks[i].GRIDSTATE];
+                return itemPrefs[data.availableBlocks[i].BLOCKTYPE];
         }
-        return itemPrefs[data.availableBlocks[0].GRIDSTATE];
+        return itemPrefs[data.availableBlocks[0].BLOCKTYPE];
     }
 
     public bool isDrop()

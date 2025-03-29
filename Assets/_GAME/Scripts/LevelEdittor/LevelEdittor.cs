@@ -60,7 +60,7 @@ public class LevelEdittor : MonoBehaviour
       availableBlocks = new AvailableBlockEditor[CurrentLevelDesignObject.availableBlocks.Length];
       for (int i = 0; i < availableBlocks.Length; i++)
       {
-         availableBlocks[i].GRIDSTATE = (GRIDSTATE)CurrentLevelDesignObject.availableBlocks[i].GRIDSTATE;
+         availableBlocks[i].BLOCKTYPE = (BLOCKTYPE)CurrentLevelDesignObject.availableBlocks[i].BLOCKTYPE;
          availableBlocks[i].ratio = CurrentLevelDesignObject.availableBlocks[i].ratio;
       }
 
@@ -81,7 +81,7 @@ public class LevelEdittor : MonoBehaviour
       var availableBlocks = new AvailableBlock[this.availableBlocks.Length];
       for (int i = 0; i < availableBlocks.Length; i++)
       {
-         availableBlocks[i].GRIDSTATE = (int)this.availableBlocks[i].GRIDSTATE;
+         availableBlocks[i].BLOCKTYPE = (int)this.availableBlocks[i].BLOCKTYPE;
          availableBlocks[i].ratio = this.availableBlocks[i].ratio;
       }
       CurrentLevelDesignObject.availableBlocks = availableBlocks;

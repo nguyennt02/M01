@@ -14,6 +14,12 @@ public enum TYPEBLOCK
     SPECIALSUBBLOCK = 12,
 }
 
+public enum BLOCKTYPE
+{
+    BLOCK,
+    RAINBOWBLOCK,
+}
+
 public enum GRIDSTATE
 {
     NONE,
@@ -49,14 +55,14 @@ public struct Grid
 [Serializable]
 public struct AvailableBlock
 {
-    public int GRIDSTATE;
+    public int BLOCKTYPE;
     public int ratio;
 }
 
 [Serializable]
 public struct AvailableBlockEditor
 {
-    public GRIDSTATE GRIDSTATE;
+    public BLOCKTYPE BLOCKTYPE;
     public int ratio;
 }
 

@@ -25,9 +25,11 @@ MonoBehaviour:
   difficulty: 0
   colorValues: 010000000200000002000000030000000400000005000000
   availableBlocks:
-  - GRIDSTATE: 1
-    ratio: 100
-  ratioDoubleAvailableBlock: 40
+  - BLOCKTYPE: 0
+    ratio: 70
+  - BLOCKTYPE: 1
+    ratio: 30
+  ratioDoubleAvailableBlock: 30
   amountBlock: 2
   grids:
   - GRIDSTATE: 0
@@ -78,5 +80,5 @@ MonoBehaviour:
     ColorIndexs: 
   - GRIDSTATE: 0
     ColorIndexs: 
-  - GRIDSTATE: 1
-    ColorIndexs: 01000000000000000100000000000000
+  - GRIDSTATE: 0
+    ColorIndexs: 

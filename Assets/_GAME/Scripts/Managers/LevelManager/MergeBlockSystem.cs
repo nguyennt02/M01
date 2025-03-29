@@ -28,17 +28,29 @@ public partial class LevelManager
                     var neighborSubBlock = block.subBlockCtrls[subBlockIndex];
                     if (currentSubBlock == neighborSubBlock) continue;
                     var neighborSubBlockColorIndex = neighborSubBlock.ColorIndex;
-                    if (neighborSubBlockColorIndex != currentSubBlockColorIndex) continue;
+                    if (!IsMerge(currentSubBlockColorIndex, neighborSubBlockColorIndex)) continue;
                     if (!needSubBlocks.ContainsKey(currentSubBlockColorIndex))
                     {
                         HashSet<SubBlockCtrl> subBlocks = new();
                         needSubBlocks.Add(currentSubBlockColorIndex, subBlocks);
+                    }
+                    if (!needSubBlocks.ContainsKey(neighborSubBlockColorIndex))
+                    {
+                        HashSet<SubBlockCtrl> subBlocks = new();
+                        needSubBlocks.Add(neighborSubBlockColorIndex, subBlocks);
                     }
                     needSubBlocks[currentSubBlockColorIndex].Add(currentSubBlock);
                     needSubBlocks[neighborSubBlockColorIndex].Add(neighborSubBlock);
                 }
             }
         }
+    }
+
+    bool IsMerge(int currentSubBlockColorIndex, int neighborSubBlockColorIndex)
+    {
+        return neighborSubBlockColorIndex == currentSubBlockColorIndex
+            || neighborSubBlockColorIndex == 8
+            || currentSubBlockColorIndex == 8;
     }
 
     public void RemoveSubBlock(Dictionary<int, HashSet<SubBlockCtrl>> needSubBlocks)
