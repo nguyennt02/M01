@@ -5,8 +5,8 @@ using UnityEngine;
 public class SubBlockCtrl : MonoBehaviour
 {
     [SerializeField] SpriteRenderer spriteRdr;
-    public float3 Position => transform.position;
     public float2 Size { get; private set; }
+    public float3 Position { get; private set; }
     public BlockCtrl BlockParent { get; private set; }
     public int ColorIndex { get; private set; }
     public List<int> Lst_Index { get; private set; }
@@ -29,6 +29,7 @@ public class SubBlockCtrl : MonoBehaviour
 
     public void SetPosition(float3 pos)
     {
+        Position = pos;
         transform.position = pos;
     }
 

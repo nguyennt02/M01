@@ -11,7 +11,7 @@ public class AvailableBlockCtrl : MonoBehaviour
     [SerializeField] GameObject[] itemPrefs;
     public float2 Size { get; private set; }
     public float3 StartPosition { get; private set; }
-    IItem[] items;
+    GameObject[] items;
     GridWord gridWord;
 
     public void InitAvailableBlock(float2 size, float3 position, int2 gridSize, LevelDesignObject data)
@@ -47,14 +47,13 @@ public class AvailableBlockCtrl : MonoBehaviour
     void InitBlock(LevelDesignObject data)
     {
         var length = gridWord.gridSize.x * gridWord.gridSize.y;
-        items = new IItem[length];
+        items = new GameObject[length];
         for (int i = 0; i < items.Length; i++)
         {
             var randomItem = RandomItem(data);
-            var item = Instantiate(randomItem, _availableBlockParent);
-            if (item.TryGetComponent(out IItem itemControl))
+            items[i] = Instantiate(randomItem, _availableBlockParent);
+            if (items[i].TryGetComponent(out IInitialize itemControl))
             {
-                items[i] = itemControl;
                 var pos = gridWord.ConvertIndexToWorldPos(i);
                 itemControl.Initialize(gridWord.scale, pos, data);
             }
@@ -79,7 +78,8 @@ public class AvailableBlockCtrl : MonoBehaviour
         var gridWord = ItemManager.Instance.gridWord;
         for (int i = 0; i < items.Length; i++)
         {
-            if (gridWord.IsPosOccupiedAt(items[i].Position))
+            var blockPos = items[i].transform.position;
+            if (gridWord.IsPosOccupiedAt(blockPos))
                 return false;
         }
         return true;
@@ -90,12 +90,13 @@ public class AvailableBlockCtrl : MonoBehaviour
         var gridWord = ItemManager.Instance.gridWord;
         for (int i = 0; i < items.Length; i++)
         {
-            if (!gridWord.IsPosOccupiedAt(items[i].Position))
+            var blockPos = items[i].transform.position;
+            if (!gridWord.IsPosOccupiedAt(blockPos)
+                && items[i].TryGetComponent(out IDrop drop))
             {
-                var blockPos = items[i].Position;
                 var index = gridWord.ConvertWorldPosToIndex(blockPos);
                 var wordPos = gridWord.ConvertIndexToWorldPos(index);
-                items[i].Drop(wordPos, index);
+                drop.Drop(wordPos, index);
             }
         }
     }

@@ -3,14 +3,14 @@ using System.Linq;
 using Unity.Mathematics;
 using UnityEngine;
 
-public class BlockCtrl : MonoBehaviour, IItem
+public class BlockCtrl : MonoBehaviour, IDrop
 {
     [SerializeField] GridWord gridWordPref;
     [SerializeField] Transform _gridWordParent;
     public Transform GridWordParent { get => _gridWordParent; }
     public int Index { get; private set; }
     public float2 Size { get; private set; }
-    public float3 Position => transform.position;
+    public float3 Position { get; private set; }
     [SerializeField] SubBlockCtrl subBlockPref;
     [SerializeField] Transform _subBlockParents;
     public Transform SubBlockParents { get => _subBlockParents; }
@@ -20,20 +20,9 @@ public class BlockCtrl : MonoBehaviour, IItem
     public SubBlockCtrl[] subBlockCtrls;
     public GridWord gridWord;
 
-    public void Initialize(float2 size, float3 position, LevelDesignObject data)
-    {
-        Size = size;
-        SetPosition(position);
-        InitGrid();
-        var amountColor = RandomAmountColor((Difficulty)data.difficulty);
-        var subColorIndexs = CreateColorValues(amountColor, data.colorValues);
-        InitSubBlock(subColorIndexs);
-        SetSizeSubBlocks();
-    }
-
     public void InitBlock(float2 size, float3 position, int[] subColorIndexs)
     {
-        Size = size;
+        SetSize(size);
         SetPosition(position);
 
         InitGrid();
@@ -46,8 +35,14 @@ public class BlockCtrl : MonoBehaviour, IItem
         Index = index;
     }
 
+    public void SetSize(float2 size)
+    {
+        Size = size;
+    }
+
     public void SetPosition(float3 pos)
     {
+        Position = pos;
         transform.position = pos;
     }
 
@@ -110,7 +105,8 @@ public class BlockCtrl : MonoBehaviour, IItem
     {
         var lst_Index = subBlock.Lst_Index;
         var pos = GetPosSubBlock(lst_Index);
-        var distance = new float2(math.abs(pos.x - subBlock.Position.x), math.abs(pos.y - subBlock.Position.y));
+        var subBlockPos = subBlock.transform.position;
+        var distance = new float2(math.abs(pos.x - subBlockPos.x), math.abs(pos.y - subBlockPos.y));
         var size = subBlock.Size + distance * 2;
         subBlock.SetPosition(pos);
         subBlock.SetSize(size);
@@ -135,79 +131,6 @@ public class BlockCtrl : MonoBehaviour, IItem
             sum += pos;
         }
         return sum / lst_index.Count;
-    }
-
-    int RandomAmountColor(Difficulty difficulty)
-    {
-        int randomNumber = UnityEngine.Random.Range(0, 101);
-        var ratio = GetRatioAt(difficulty);
-
-        int threshold = ratio.ratio1SubBlock;
-        if (randomNumber < threshold) return 1;
-
-        threshold += ratio.ratio2SubBlock;
-        if (randomNumber < threshold) return 2;
-
-        threshold += ratio.ratio3SubBlock;
-        if (randomNumber < threshold) return 3;
-
-        return 4;
-    }
-
-    Ratio GetRatioAt(Difficulty difficulty)
-    {
-        Ratio ratio = new();
-        switch (difficulty)
-        {
-            case Difficulty.Easy:
-                ratio.ratio1SubBlock = 40;
-                ratio.ratio2SubBlock = 20;
-                ratio.ratio3SubBlock = 15;
-                break;
-            case Difficulty.Medium:
-                ratio.ratio1SubBlock = 30;
-                ratio.ratio2SubBlock = 20;
-                ratio.ratio3SubBlock = 20;
-                break;
-            case Difficulty.Hard:
-                ratio.ratio1SubBlock = 20;
-                ratio.ratio2SubBlock = 20;
-                ratio.ratio3SubBlock = 20;
-                break;
-        }
-        return ratio;
-    }
-
-    public int[] CreateColorValues(int amount, int[] colorValues)
-    {
-        int[] needColors = NeedColor(colorValues, amount);
-        List<int> needColorsClone = new(needColors);
-        int[] colors = new int[4];
-        for (int i = 0; i < colors.Length; i++)
-        {
-            if (needColorsClone.Count == 0) needColorsClone = new(needColors);
-            var randomIndex = UnityEngine.Random.Range(0, needColorsClone.Count);
-            colors[i] = needColorsClone[randomIndex];
-            needColorsClone.RemoveAt(randomIndex);
-        }
-        return colors;
-    }
-
-    int[] NeedColor(int[] colorValues, int amount)
-    {
-        int[] needColors = new int[amount];
-        for (int i = 0; i < needColors.Length; i++)
-        {
-            while (true)
-            {
-                var randomIndex = UnityEngine.Random.Range(0, colorValues.Length);
-                var colorValue = colorValues[randomIndex];
-                if (needColors.Contains(colorValue)) continue;
-                needColors[i] = colorValue;
-                break;
-            }
-        }
-        return needColors;
     }
 
     public void Drop(float3 wordPos, int index)

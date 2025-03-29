@@ -22,6 +22,7 @@ public static class DrawGizmos
 
     public static void DrawString(string text, Vector3 worldPos, Color? color = null)
     {
+#if UNITY_EDITOR
         UnityEditor.Handles.BeginGUI();
 
         var restoreColor = GUI.color;
@@ -41,5 +42,6 @@ public static class DrawGizmos
         GUI.Label(new Rect(screenPos.x - (size.x / 2), -screenPos.y + view.position.height - 35, size.x, size.y), text);
         GUI.color = restoreColor;
         UnityEditor.Handles.EndGUI();
+#endif
     }
 }
