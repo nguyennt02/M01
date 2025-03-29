@@ -4,7 +4,7 @@ using UnityEngine;
 
 public partial class LevelManager
 {
-    public void CheckBlock(out Dictionary<int, HashSet<SubBlockCtrl>> needSubBlocks)
+    public void CheckBlocks(out Dictionary<int, HashSet<SubBlockCtrl>> needSubBlocks)
     {
         needSubBlocks = new();
         var gridWord = ItemManager.Instance.gridWord;
@@ -12,36 +12,73 @@ public partial class LevelManager
         for (int i = 0; i < blocks.Length; i++)
         {
             if (blocks[i] == null) continue;
-            var subBlockCtrls = blocks[i].subBlockCtrls;
-            for (int j = 0; j < subBlockCtrls.Length; j++)
+            CheckBlock(out needSubBlocks, blocks[i], blocks, gridWord);
+            // var subBlockCtrls = blocks[i].subBlockCtrls;
+            // for (int j = 0; j < subBlockCtrls.Length; j++)
+            // {
+            //     var currentSubBlock = subBlockCtrls[j];
+            //     var currentSubBlockColorIndex = currentSubBlock.ColorIndex;
+            //     var neighbors = blocks[i].gridWord.FindNeighborAt(j);
+            //     for (int k = 0; k < neighbors.Length; k++)
+            //     {
+            //         if (gridWord.IsPosOutsideAt(neighbors[k])) continue;
+            //         var blockIndex = gridWord.ConvertWorldPosToIndex(neighbors[k]);
+            //         var block = blocks[blockIndex];
+            //         if (block == null) continue;
+            //         var subBlockIndex = block.gridWord.ConvertWorldPosToIndex(neighbors[k]);
+            //         var neighborSubBlock = block.subBlockCtrls[subBlockIndex];
+            //         if (currentSubBlock == neighborSubBlock) continue;
+            //         var neighborSubBlockColorIndex = neighborSubBlock.ColorIndex;
+            //         if (!IsMerge(currentSubBlockColorIndex, neighborSubBlockColorIndex)) continue;
+            //         if (!needSubBlocks.ContainsKey(currentSubBlockColorIndex))
+            //         {
+            //             HashSet<SubBlockCtrl> subBlocks = new();
+            //             needSubBlocks.Add(currentSubBlockColorIndex, subBlocks);
+            //         }
+            //         if (!needSubBlocks.ContainsKey(neighborSubBlockColorIndex))
+            //         {
+            //             HashSet<SubBlockCtrl> subBlocks = new();
+            //             needSubBlocks.Add(neighborSubBlockColorIndex, subBlocks);
+            //         }
+            //         needSubBlocks[currentSubBlockColorIndex].Add(currentSubBlock);
+            //         needSubBlocks[neighborSubBlockColorIndex].Add(neighborSubBlock);
+            //     }
+            // }
+        }
+    }
+
+    public void CheckBlock(out Dictionary<int, HashSet<SubBlockCtrl>> needSubBlocks, BlockCtrl block, BlockCtrl[] blocks, GridWord gridWord)
+    {
+        needSubBlocks = new();
+        var subBlockCtrls = block.subBlockCtrls;
+        for (int j = 0; j < subBlockCtrls.Length; j++)
+        {
+            var currentSubBlock = subBlockCtrls[j];
+            var currentSubBlockColorIndex = currentSubBlock.ColorIndex;
+            var neighbors = block.gridWord.FindNeighborAt(j);
+            for (int k = 0; k < neighbors.Length; k++)
             {
-                var currentSubBlock = subBlockCtrls[j];
-                var currentSubBlockColorIndex = currentSubBlock.ColorIndex;
-                var neighbors = blocks[i].gridWord.FindNeighborAt(j);
-                for (int k = 0; k < neighbors.Length; k++)
+                if (gridWord.IsPosOutsideAt(neighbors[k])) continue;
+                var blockIndex = gridWord.ConvertWorldPosToIndex(neighbors[k]);
+                var block1 = blocks[blockIndex];
+                if (block1 == null) continue;
+                var subBlockIndex = block1.gridWord.ConvertWorldPosToIndex(neighbors[k]);
+                var neighborSubBlock = block1.subBlockCtrls[subBlockIndex];
+                if (currentSubBlock == neighborSubBlock) continue;
+                var neighborSubBlockColorIndex = neighborSubBlock.ColorIndex;
+                if (!IsMerge(currentSubBlockColorIndex, neighborSubBlockColorIndex)) continue;
+                if (!needSubBlocks.ContainsKey(currentSubBlockColorIndex))
                 {
-                    if (gridWord.IsPosOutsideAt(neighbors[k])) continue;
-                    var blockIndex = gridWord.ConvertWorldPosToIndex(neighbors[k]);
-                    var block = blocks[blockIndex];
-                    if (block == null) continue;
-                    var subBlockIndex = block.gridWord.ConvertWorldPosToIndex(neighbors[k]);
-                    var neighborSubBlock = block.subBlockCtrls[subBlockIndex];
-                    if (currentSubBlock == neighborSubBlock) continue;
-                    var neighborSubBlockColorIndex = neighborSubBlock.ColorIndex;
-                    if (!IsMerge(currentSubBlockColorIndex, neighborSubBlockColorIndex)) continue;
-                    if (!needSubBlocks.ContainsKey(currentSubBlockColorIndex))
-                    {
-                        HashSet<SubBlockCtrl> subBlocks = new();
-                        needSubBlocks.Add(currentSubBlockColorIndex, subBlocks);
-                    }
-                    if (!needSubBlocks.ContainsKey(neighborSubBlockColorIndex))
-                    {
-                        HashSet<SubBlockCtrl> subBlocks = new();
-                        needSubBlocks.Add(neighborSubBlockColorIndex, subBlocks);
-                    }
-                    needSubBlocks[currentSubBlockColorIndex].Add(currentSubBlock);
-                    needSubBlocks[neighborSubBlockColorIndex].Add(neighborSubBlock);
+                    HashSet<SubBlockCtrl> subBlocks = new();
+                    needSubBlocks.Add(currentSubBlockColorIndex, subBlocks);
                 }
+                if (!needSubBlocks.ContainsKey(neighborSubBlockColorIndex))
+                {
+                    HashSet<SubBlockCtrl> subBlocks = new();
+                    needSubBlocks.Add(neighborSubBlockColorIndex, subBlocks);
+                }
+                needSubBlocks[currentSubBlockColorIndex].Add(currentSubBlock);
+                needSubBlocks[neighborSubBlockColorIndex].Add(neighborSubBlock);
             }
         }
     }
@@ -60,6 +97,18 @@ public partial class LevelManager
             foreach (var subBlock in subBlocks)
             {
                 subBlock.Remove();
+            }
+        }
+    }
+
+    public void ScaleSubBlock(Dictionary<int, HashSet<SubBlockCtrl>> needSubBlocks)
+    {
+        foreach (var subBlocks in needSubBlocks.Values)
+        {
+            foreach (var subBlock in subBlocks)
+            {
+                var size = subBlock.Size * 1.2f;
+                subBlock.SetSize(size);
             }
         }
     }

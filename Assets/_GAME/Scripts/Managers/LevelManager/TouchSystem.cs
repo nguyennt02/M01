@@ -50,6 +50,7 @@ public partial class LevelManager
         targetPos.y += 1;
 
         CurrentAvailableBlock.transform.position = targetPos;
+        UpdatePosGridWordOfBlock();
     }
 
     void SpawnAvailableBlock()
@@ -63,12 +64,54 @@ public partial class LevelManager
     {
         while (true)
         {
-            CheckBlock(out Dictionary<int, HashSet<SubBlockCtrl>> needSubBlocks);
-            if(needSubBlocks.Count == 0) return;
+            CheckBlocks(out Dictionary<int, HashSet<SubBlockCtrl>> needSubBlocks);
+            if (needSubBlocks.Count == 0) return;
             RemoveSubBlock(needSubBlocks);
             RemoveBlock();
             UpdateValueBlock();
             UpdateSizeBlock();
+        }
+    }
+
+    void UpdatePosGridWordOfBlock()
+    {
+        var gridWord = ItemManager.Instance.gridWord;
+        var items = CurrentAvailableBlock.items;
+        foreach (var item in items)
+        {
+            var blockPos = item.transform.position;
+            if (item.TryGetComponent(out BlockCtrl block))
+            {
+                if (!gridWord.IsPosOccupiedAt(blockPos))
+                {
+                    var index = gridWord.ConvertWorldPosToIndex(blockPos);
+                    var wordPos = gridWord.ConvertIndexToWorldPos(index);
+                    block.ChangePosGridWord(wordPos);
+                    FindBlock(out Dictionary<int, HashSet<SubBlockCtrl>> needSubBlocks);
+                    ScaleSubBlock(needSubBlocks);
+                }
+                else
+                {
+                    block.ReturnGridWord();
+                }
+            }
+        }
+    }
+
+
+
+    void FindBlock(out Dictionary<int, HashSet<SubBlockCtrl>> needSubBlocks)
+    {
+        needSubBlocks = new();
+        var blocks = ItemManager.Instance.blocks;
+        var gridWord = ItemManager.Instance.gridWord;
+        var items = CurrentAvailableBlock.items;
+        foreach (var item in items)
+        {
+            if (item.TryGetComponent(out BlockCtrl block))
+            {
+                CheckBlock(out needSubBlocks, block, blocks, gridWord);
+            }
         }
     }
 }

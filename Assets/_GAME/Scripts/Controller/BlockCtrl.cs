@@ -141,6 +141,7 @@ public class BlockCtrl : MonoBehaviour, IDrop
         ItemManager.Instance.blocks[index] = this;
         transform.SetParent(blocksParent);
         SetPosition(wordPos);
+        ReturnGridWord();
 
         var value = gridWord.EmptyValue + (int)GRIDSTATE.BLOCK;
         gridWord.SetValueAt(wordPos, value);
@@ -158,5 +159,15 @@ public class BlockCtrl : MonoBehaviour, IDrop
             var value = ItemManager.Instance.gridWord.EmptyValue;
             ItemManager.Instance.gridWord.SetValueAt(Index, value);
         }
+    }
+
+    public void ChangePosGridWord(float3 wordPos)
+    {
+        gridWord.transform.position = wordPos;
+    }
+
+    public void ReturnGridWord()
+    {
+        gridWord.transform.position = transform.position;
     }
 }

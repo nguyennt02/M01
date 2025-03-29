@@ -11,7 +11,7 @@ public class AvailableBlockCtrl : MonoBehaviour
     [SerializeField] GameObject[] itemPrefs;
     public float2 Size { get; private set; }
     public float3 StartPosition { get; private set; }
-    GameObject[] items;
+    public GameObject[] items;
     GridWord gridWord;
 
     public void InitAvailableBlock(float2 size, float3 position, int2 gridSize, LevelDesignObject data)
